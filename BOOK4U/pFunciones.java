@@ -33,13 +33,13 @@ import java.sql.Statement;
 			        ResultSet resultSet = statement.executeQuery();
 
 			        if (resultSet.next()) {
-			            nombreUsuario = resultSet.getString("NOMBRE");
-			            emailUsuario = resultSet.getString("EMAIL");
-			            passwordUsuario = resultSet.getString("PASSWORD");
-			            fotoUsuario = resultSet.getString("FOTOPERFIL");
-			            creditosUsuario = resultSet.getInt("CREDITOS");
-			            dniUsuario = resultSet.getString("DNI"); 
-			            telefonoUsuario = resultSet.getString("TELEFONO"); 
+			        	pFunciones.nombreUsuario = resultSet.getString("NOMBRE");
+			        	pFunciones.emailUsuario = resultSet.getString("EMAIL");
+			        	pFunciones.passwordUsuario = resultSet.getString("PASSWORD");
+			        	pFunciones.fotoUsuario = resultSet.getString("FOTOPERFIL");
+			        	pFunciones.creditosUsuario = resultSet.getInt("CREDITOS");
+			        	pFunciones.dniUsuario = resultSet.getString("DNI"); 
+			        	pFunciones.telefonoUsuario = resultSet.getString("TELEFONO"); 
 			            
 			            System.out.println("Inicio de sesión exitoso para el usuario: " + emailUsuario);
 			            
