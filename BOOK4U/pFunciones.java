@@ -1,6 +1,7 @@
 package BOOK4U;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -56,7 +57,22 @@ import java.sql.Statement;
 				return false;
 			}
 			
+			public static boolean registrarFechasEstancia(Date fechaInicio, Date fechaFin) {
+		        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+		            String sql = "INSERT INTO Estancia (FECHA_INICIO, FECHA_FIN) VALUES (?, ?)";
+		            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+		                statement.setDate(1, fechaInicio);
+		                statement.setDate(2, fechaFin);
 
+		                int rowsAffected = statement.executeUpdate();
+		                return rowsAffected > 0;
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		        return false;
+		    }
+			
 public static boolean registrarUsuario(String dni, String telefono, String correo, String usuario, String contrasena) {
         Connection connection = null;
         try {
