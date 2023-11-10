@@ -59,7 +59,7 @@ import java.sql.Statement;
 			
 			public static boolean registrarFechasEstancia(Date fechaInicio, Date fechaFin) {
 		        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-		            String sql = "INSERT INTO Estancia (FECHA_INICIO, FECHA_FIN) VALUES (?, ?)";
+		            String sql = "INSERT INTO Reservas (FECHA_INICIO, FECHA_FIN) VALUES (?, ?)";
 		            try (PreparedStatement statement = connection.prepareStatement(sql)) {
 		                statement.setDate(1, fechaInicio);
 		                statement.setDate(2, fechaFin);
