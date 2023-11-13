@@ -8,6 +8,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 public class pMenuPrincipal extends JFrame {
+    private pMisReservas currentPanel;
+
     public pMenuPrincipal() {
         setTitle("MENÚ PRINCIPAL");
         setSize(800, 600);
@@ -42,9 +44,12 @@ public class pMenuPrincipal extends JFrame {
         gbc.gridwidth = 1;
         gbc.gridy = 2;
 
-        addButton(panel, "Nueva Reserva", e -> showMessage("Nueva Reserva"));
-        addButton(panel, "Ver Reservas", e -> showMessage("Ver Reservas"));
-        addButton(panel, "Inicio", e -> showMessage("Inicio"));
+        addButton(panel, "pMisReservas", e -> switchToPanel(new pMisReservas()));
+        addButton(panel, "PPrincipal", e -> switchToPanel(new pMisReservas()));
+        addButton(panel, "pInicio", e -> switchToPanel(new pMisReservas()));
+
+        // Set the initial panel (you can replace this with the desired default page)
+        switchToPanel(new pMisReservas());
 
         add(panel);
 
@@ -77,8 +82,15 @@ public class pMenuPrincipal extends JFrame {
         // ... (unchanged)
     }
 
-    private void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
+    private void switchToPanel(pMisReservas pMisReservas) {
+        if (currentPanel != null) {
+            remove(currentPanel);
+        }
+
+        currentPanel = pMisReservas;
+        add(currentPanel);
+        revalidate();
+        repaint();
     }
 
     public static void main(String[] args) {
@@ -102,3 +114,6 @@ class RoundButtonBorder extends AbstractBorder {
         g2.dispose();
     }
 }
+
+
+
