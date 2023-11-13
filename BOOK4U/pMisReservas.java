@@ -2,6 +2,8 @@ package BOOK4U;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class pMisReservas {
     public static void main(String[] args) {
@@ -10,26 +12,66 @@ public class pMisReservas {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLayout(new BorderLayout());
 
-            // Toolbar
-            JToolBar toolbar = new JToolBar();
-            frame.add(toolbar, BorderLayout.NORTH);
+            // Menú
+            JPanel mainPanel = new JPanel(new BorderLayout());
+            mainPanel.setBackground(new Color(255, 210, 175));
+
+            JPanel northPanel = new JPanel(new BorderLayout());
+            JToolBar toolBar = new JToolBar();
+            toolBar.setFloatable(false);
+            toolBar.setPreferredSize(new Dimension(800, 64));
+
+            JButton paginaPrincipalButton = new JButton("Página principal");
+            paginaPrincipalButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    pMenuPrincipal mp = new pMenuPrincipal();
+                    mp.setVisible(true);
+                    frame.dispose();
+                }
+            });
+
+            JButton misReservasButton = new JButton("Mis Reservas");
+            JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+
+            FlowLayout buttonLayout = new FlowLayout();
+            buttonLayout.setHgap(95);
+            toolBar.setLayout(buttonLayout);
+            toolBar.add(paginaPrincipalButton);
+            toolBar.add(misReservasButton);
+            toolBar.add(nuevasReservasButton);
+
+            JButton perfilButton = new JButton();
+            ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
+            Image image = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(image);
+            perfilButton.setIcon(icon);
+
+            JPanel perfilPanel = new JPanel(new BorderLayout());
+            perfilPanel.add(perfilButton, BorderLayout.EAST);
+            toolBar.add(perfilPanel);
+
+            northPanel.add(toolBar, BorderLayout.NORTH);
+
+            mainPanel.add(northPanel, BorderLayout.NORTH);
 
             // Panel de contenido
             JPanel contentPanel = new JPanel();
             contentPanel.setLayout(new GridLayout(0, 1)); // 2 elementos por fila
 
             // Añadir elementos al panel de contenido
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 7; i++) {
                 contentPanel.add(createReservationPanel());
             }
 
             // ScrollPane
             JScrollPane scrollPane = new JScrollPane(contentPanel);
-            frame.add(scrollPane, BorderLayout.CENTER);
+            mainPanel.add(scrollPane, BorderLayout.CENTER);
 
             // Fondo
-            frame.getContentPane().setBackground(new Color(255, 210, 175)); // RGB
+            mainPanel.setBackground(new Color(255, 210, 175));
 
+            frame.add(mainPanel);
             frame.setSize(800, 600);
             frame.setVisible(true);
         });
@@ -40,25 +82,25 @@ public class pMisReservas {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         // Imagen
-     // Imagen
-        JLabel imageLabel = new JLabel(new ImageIcon("ruta/a/la/imagen.jpg"));
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Añadir esta línea
+        JLabel imageLabel = new JLabel(new ImageIcon("src/imagenes/Casa1.jpg"));
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(imageLabel);
 
         // Dirección
         JLabel addressLabel = new JLabel("Dirección: lel");
-        addressLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Añadir esta línea
+        addressLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(addressLabel);
 
         // Fechas
         JLabel datesLabel = new JLabel("Fechas: lel");
-        datesLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Añadir esta línea
+        datesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(datesLabel);
 
         // Coste
         JLabel costLabel = new JLabel("Coste: lel");
-        costLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Añadir esta línea
+        costLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(costLabel);
-		return panel;
+
+        return panel;
     }
 }
