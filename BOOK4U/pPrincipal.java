@@ -50,7 +50,7 @@ public class pPrincipal extends JFrame {
         panel.add(profilePanel);
 
         // Crea un mensaje de bienvenida
-        JLabel welcomeLabel = new JLabel("Bienvenido, ( ... )");
+        JLabel welcomeLabel = new JLabel("Bienvenido, " + pFunciones.nombreUsuario);
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(welcomeLabel);
 
@@ -60,7 +60,7 @@ public class pPrincipal extends JFrame {
         // Crea un panel para los créditos
         JPanel creditsPanel = new JPanel();
         creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
-        creditsPanel.add(new JLabel("Créditos: ( ... )"));
+        creditsPanel.add(new JLabel("Créditos: " + pFunciones.creditosUsuario));
         creditsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(creditsPanel);
 
