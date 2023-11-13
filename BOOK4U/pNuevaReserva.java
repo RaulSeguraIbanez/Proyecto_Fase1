@@ -54,18 +54,19 @@ public class pNuevaReserva {
 
         // Creamos un FlowLayout para los botones y le asignamos un espacio entre ellos
         FlowLayout buttonLayout = new FlowLayout();
-        buttonLayout.setHgap(95); // Puedes cambiar el valor según tu preferencia
+        buttonLayout.setHgap(20); // Puedes cambiar el valor según tu preferencia
         toolBar.setLayout(buttonLayout);
+
         toolBar.add(paginaPrincipalButton);
         toolBar.add(misReservasButton);
         toolBar.add(nuevasReservasButton);
-        
+
         // Creamos un JButton con un ImageIcon para el botón de perfil
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png"); // Puedes cambiar la ruta de la imagen según tu preferencia
 
         // Creamos un Image con el tamaño que queramos para el botón de perfil
-        Image image = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH); // Puedes cambiar los valores según tu preferencia
+        Image image = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Puedes cambiar los valores según tu preferencia
         icon = new ImageIcon(image);
 
         // Añadimos el ImageIcon al JButton
