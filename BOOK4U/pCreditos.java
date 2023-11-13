@@ -73,15 +73,17 @@ public class pCreditos extends JFrame {
         panel.add(verCreditosButton, gbc);
 
         inicioButton = new JButton("IR AL MENÚ PRINCIPAL");
-        inicioButton.addActionListener(e -> JOptionPane.showMessageDialog(pCreditos.this, "Redireccionando a la página de inicio."));
+        inicioButton.addActionListener(e -> JOptionPane.showMessageDialog(pCreditos.this, " pMisReservas"));
         panel.add(inicioButton, gbc);
 
         gbc.gridy = 4;
         gbc.gridwidth = 1;
         irAPrincipalButton = new JButton("IR A MENÚ PRINCIPAL");
         irAPrincipalButton.addActionListener(e -> {
-            // Lógica para ir a la clase principal
-        });
+        	 pMenuPrincipal menuPrincipal = new pMenuPrincipal();
+        	    menuPrincipal.setVisible(true);
+        	    dispose(); // Cierra la ventana actual (pCreditos)
+        	});
         panel.add(irAPrincipalButton, gbc);
 
         gbc.gridy = 3;
