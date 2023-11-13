@@ -254,11 +254,11 @@ public class pNuevaReserva {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new pNuevaReserva();
-        });
-    }
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
 

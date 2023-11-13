@@ -10,16 +10,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class pListaParaReserva extends JFrame {
-    private static final String URL = "jdbc:tu_base_de_datos"; // Reemplaza con la URL de tu base de datos
-    private static final String USER = "tu_usuario"; // Reemplaza con tu usuario de base de datos
-    private static final String PWD = "tu_contraseña"; // Reemplaza con tu contraseña de base de datos
+    private static final String USER = "23_24_DAM2_EHHMMM";
+    private static final String PWD = "ehhmmm_123";
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     public pListaParaReserva() {
         setTitle("Ventana Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(800, 800);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(255, 210, 175));
 
         // Barra de herramientas
         JToolBar toolBar = new JToolBar();
@@ -27,12 +28,16 @@ public class pListaParaReserva extends JFrame {
         toolBar.setPreferredSize(new Dimension(800, 70));
 
         JButton paginaPrincipalButton = new JButton("Página principal");
-        paginaPrincipalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Acción al hacer clic en "Página principal"
-                System.out.println("Ir a la página principal");
-            }
+        paginaPrincipalButton.addActionListener(e -> {
+            // Creamos una instancia de la clase pMenuPrincipal
+            pMenuPrincipal mp = new pMenuPrincipal();
+
+            // Hacemos visible el JFrame de la clase pMenuPrincipal
+            mp.setVisible(true);
+
+            // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+            setVisible(false); // Para ocultar
+            // dispose(); // Para cerrar
         });
 
         JButton misReservasButton = new JButton("Mis Reservas");
@@ -59,46 +64,17 @@ public class pListaParaReserva extends JFrame {
         mainPanel.add(toolBar, BorderLayout.NORTH);
 
         // Menú con información de estancias
-        JPanel menuPanel = new JPanel(new GridLayout(0, 2));
+        JPanel menuPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Cambia según tus necesidades
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-            String sql = "SELECT Nombre, Direccion, Coste, Foto_url FROM estancias";
-            try (PreparedStatement statement = connection.prepareStatement(sql);
-                 ResultSet resultSet = statement.executeQuery()) {
+        // Botón de Refresh
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> {
+            // Lógica para volver a cargar la información de la base de datos
+            refreshData(menuPanel);
+        });
 
-                while (resultSet.next()) {
-                    String nombre = resultSet.getString("Nombre");
-                    String direccion = resultSet.getString("Direccion");
-                    String coste = resultSet.getString("Coste");
-                    String fotoUrl = resultSet.getString("Foto_url");
-
-                    JButton estanciaButton = new JButton();
-                    estanciaButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            System.out.println("Ir a la página de la estancia: " + nombre);
-                        }
-                    });
-
-                    estanciaButton.setText("<html><b>Nombre:</b> " + nombre +
-                            "<br><b>Dirección:</b> " + direccion + "<br><b>Coste:</b> " + coste + "</html>");
-
-                    estanciaButton.setBorderPainted(false);
-                    estanciaButton.setContentAreaFilled(false);
-
-                    estanciaButton.setBackground(new Color(255, 210, 175));
-
-                    // Cargar la imagen desde la URL (comentario, puedes adaptar esto según tus necesidades)
-                    // Image foto = ImageIO.read(new URL(fotoUrl));
-                    // ImageIcon fotoIcon = new ImageIcon(foto.getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-                    // estanciaButton.setIcon(fotoIcon);
-
-                    menuPanel.add(estanciaButton);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Agregar el botón Refresh en la parte inferior
+        mainPanel.add(refreshButton, BorderLayout.SOUTH);
 
         // JScrollPane para permitir el desplazamiento
         JScrollPane scrollPane = new JScrollPane(menuPanel);
@@ -106,9 +82,82 @@ public class pListaParaReserva extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+
+        // Inicializar los datos al abrir la ventana
+        refreshData(menuPanel);
+    }
+
+    private void refreshData(JPanel menuPanel) {
+        // Limpiar el panel antes de volver a cargar los datos
+        menuPanel.removeAll();
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+            String query = "SELECT ID_ESTANCIA, NOMBRE, DIRECCION, CREDITOS_DIA, FOTO FROM ESTANCIA ORDER BY ID_ESTANCIA";
+            try (PreparedStatement statement = connection.prepareStatement(query);
+                 ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("ID_ESTANCIA");
+                    String nombre = resultSet.getString("NOMBRE");
+                    String direccion = resultSet.getString("DIRECCION");
+                    String coste = resultSet.getString("CREDITOS_DIA");
+                    String fotoUrl = resultSet.getString("FOTO");
+
+                    // Crear un botón para cada estancia que contenga la foto y la información
+                    JButton estanciaButton = new JButton();
+
+                    // Configurar el botón para mostrar la foto
+                    try {
+                        ImageIcon fotoIcon = new ImageIcon(fotoUrl);
+                        Image image1 = fotoIcon.getImage().getScaledInstance(140, 170, Image.SCALE_SMOOTH);
+                        estanciaButton.setIcon(new ImageIcon(image1));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    // Configurar el botón para mostrar la información de la estancia
+                    estanciaButton.setToolTipText("<html><b>ID:</b> " + id +
+                            "<br><b>Nombre:</b> " + nombre +
+                            "<br><b>Dirección:</b> " + direccion +
+                            "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
+
+                    // Establecer el aspecto del botón para que no se vea como un botón
+                    estanciaButton.setBorderPainted(false);
+                    estanciaButton.setFocusPainted(false);
+                    estanciaButton.setContentAreaFilled(false);
+
+                    // Agregar un ActionListener para manejar el clic en el botón
+                    estanciaButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Aquí puedes agregar la lógica para abrir la pantalla NuevaReserva con la información correspondiente
+                            abrirNuevaReserva(id);
+                        }
+                    });
+
+                    // Agregar el botón de la estancia al panel principal
+                    menuPanel.add(estanciaButton);
+
+                    System.out.println(id + " " + nombre + " " + direccion + " " + coste + " " + fotoUrl);
+                }
+
+                // Actualizar la vista
+                menuPanel.revalidate();
+                menuPanel.repaint();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void abrirNuevaReserva(int id) {
+        // Crear una instancia de NuevaReserva y pasar la id al constructor
+    	pNuevaReserva nuevaReserva = new pNuevaReserva();
+        nuevaReserva.setVisible(true);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new pListaParaReserva());
     }
 }
+
