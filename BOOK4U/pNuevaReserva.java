@@ -164,7 +164,7 @@ public class pNuevaReserva {
                 Date fechaInicio = new Date(fechaInicioChooser.getDate().getTime());
                 Date fechaFin = new Date(fechaFinChooser.getDate().getTime());
 
-               // pFunciones.registrarFechasEstancia(fechaInicio, fechaFin);
+                pFunciones.registrarFechasEstancia(fechaInicio, fechaFin);
 
                 // Puedes mostrar un mensaje de confirmación o manejar cualquier otro resultado aquí
 
