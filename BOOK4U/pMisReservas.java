@@ -103,4 +103,9 @@ public class pMisReservas {
 
         return panel;
     }
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }
