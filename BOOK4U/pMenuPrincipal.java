@@ -45,6 +45,7 @@ public class pMenuPrincipal extends JFrame {
         gbc.gridy = 2;
 
 
+  
         addButton(panel, "PPrincipal", e -> {
             pPrincipal Principal = new pPrincipal();
             Principal.setVisible(true);
@@ -64,9 +65,9 @@ public class pMenuPrincipal extends JFrame {
         });
 
 
-        //add(panel);
+        add(panel);
 
-       // setVisible(true);
+        setVisible(true);
     }
 
     private void addButton(JPanel panel, String text, ActionListener actionListener) {
