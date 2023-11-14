@@ -74,10 +74,12 @@ public class pPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	dispose();
-            	SwingUtilities.invokeLater(() -> {
-                    new pMenuPrincipal();
-                });
-            }
+            	SwingUtilities.invokeLater(new Runnable() {
+    	            @Override
+    	            public void run() {
+    	                new pMenuPrincipal().setVisible(true);
+    	            }
+    	        });            }
         });
 
         panel.add(enterButton);

@@ -10,79 +10,87 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 public class pMenuPrincipal extends JFrame {
-	
-	  private JButton misreservas;
-	  private JButton inicioButton;
-	  private JButton irAPrincipalButton;
-	  
-	  public pMenuPrincipal() {
-	        // Configuración de la ventana principal
-	        setTitle("Menú Principal");
-	        setSize(600, 400);
-	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        setLocationRelativeTo(null); 
-	        setLayout(new BorderLayout());
-	        setBackground(new Color(255, 210, 175));
 
-	        // Panel central con la imagen
-	        JPanel panelCentral = new JPanel();
-	        ImageIcon imagen = new ImageIcon("src/imagenes/LogoBOOK4U.png"); 
-	        JLabel labelImagen = new JLabel(imagen);
-	        panelCentral.add(labelImagen);
+    private JButton misreservas;
+    private JButton inicioButton;
+    private JButton irAPrincipalButton;
 
-	        // Panel inferior con los botones
-	        JPanel panelBotones = new JPanel();
-	        JButton btnVerReservas = new JButton("Ver Reservas");
-	        JButton btnIrAInicio = new JButton("Ir a Inicio");
-	        JButton btnIrAPrincipal = new JButton("Ir a Principal");
+    public pMenuPrincipal() {
+        // Configuración de la ventana principal
+        setTitle("Menú Principal");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        setBackground(new Color(255, 210, 175));
 
-	       
-	        btnVerReservas.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	               
-	            	 pMisReservas mp = new  pMisReservas();
-	                    mp.setVisible(true);
-	                    
-	                
-	                new pMisReservas().setVisible(true);
-	            }
-	        });
+        // Añadir la JToolBar
+        add(createToolBar(), BorderLayout.NORTH);
 
-	        btnIrAInicio.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	               
-	                dispose();
-	                new pInicio().setVisible(true);
-	            }
-	        });
+        // Panel central con la imagen
+        JPanel panelCentral = new JPanel();
+        ImageIcon imagen = new ImageIcon("src/imagenes/LogoBOOK4U.png");
+        JLabel labelImagen = new JLabel(imagen);
+        panelCentral.add(labelImagen);
 
-	        btnIrAPrincipal.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	              
-	                dispose();
-	                new pPrincipal().setVisible(true);
-	            }
-	        });
+        add(panelCentral, BorderLayout.CENTER);
+    }
 
-	        panelBotones.add(btnVerReservas);
-	        panelBotones.add(btnIrAInicio);
-	        panelBotones.add(btnIrAPrincipal);
+    private JToolBar createToolBar() {
+        // Creamos un JToolBar para colocar los cuatro botones en la zona norte del panel secundario
+        JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
 
-	        
-	        add(panelCentral, BorderLayout.CENTER);
-	        add(panelBotones, BorderLayout.SOUTH);
-	    }
+        // Añadimos un Dimension al JToolBar para hacerlo más alto
+        toolBar.setPreferredSize(new Dimension(800, 64));
 
-	    public static void main(String[] args) {
-	       
-	        SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-	                new pMenuPrincipal().setVisible(true);
-	            }
-	        });
-	    }
-	}
+        JButton paginaPrincipalButton = new JButton("Créditos");
+
+        // Añadimos un ActionListener al botón
+        paginaPrincipalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Creamos una instancia de la clase pPrincipal
+            	SwingUtilities.invokeLater(pCreditos::new);
+
+                // Hacemos visible el JFrame de la clase pPrincipal
+
+
+                // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+                dispose(); // Para cerrar
+            }
+        });
+
+        JButton misReservasButton = new JButton("Mis Reservas");
+        JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+
+        // Creamos un FlowLayout para los botones y le asignamos un espacio entre ellos
+        FlowLayout buttonLayout = new FlowLayout();
+        buttonLayout.setHgap(20); // Puedes cambiar el valor según tu preferencia
+        toolBar.setLayout(buttonLayout);
+
+        toolBar.add(nuevasReservasButton);
+        toolBar.add(misReservasButton);
+        toolBar.add(paginaPrincipalButton);
+
+        // Creamos un JButton con un ImageIcon para el botón de perfil
+        JButton perfilButton = new JButton();
+        ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png"); // Puedes cambiar la ruta de la imagen según tu preferencia
+
+        // Creamos un Image con el tamaño que queramos para el botón de perfil
+        Image image = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Puedes cambiar los valores según tu preferencia
+        icon = new ImageIcon(image);
+
+        // Añadimos el ImageIcon al JButton
+        perfilButton.setIcon(icon);
+
+        // Creamos un JPanel con un BorderLayout para colocar el botón de perfil en la zona este
+        JPanel perfilPanel = new JPanel(new BorderLayout());
+        perfilPanel.add(perfilButton, BorderLayout.EAST);
+
+        // Añadimos el JPanel al JToolBar
+        toolBar.add(perfilPanel);
+
+        return toolBar;
+    }
+}
