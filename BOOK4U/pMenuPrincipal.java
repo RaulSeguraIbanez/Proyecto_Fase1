@@ -41,7 +41,9 @@ public class pMenuPrincipal extends JFrame {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	               
-	                dispose(); 
+	            	 pMisReservas mp = new  pMisReservas();
+	                    mp.setVisible(true);
+	                    
 	                
 	                new pMisReservas().setVisible(true);
 	            }
