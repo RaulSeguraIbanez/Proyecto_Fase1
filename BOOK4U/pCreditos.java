@@ -38,6 +38,7 @@ public class pCreditos extends JFrame {
         gbc.insets = new Insets(100, 20, 100, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.setBackground(new Color(255, 210, 175));
+      //  panel.setPreferredSize(new Dimension(800, 64));
 
         gbc.gridx = 0;
         gbc.gridy = 1;

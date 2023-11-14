@@ -10,6 +10,11 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 public class pMenuPrincipal extends JFrame {
+	
+	  private JButton misreservas;
+	  private JButton inicioButton;
+	  private JButton irAPrincipalButton;
+	  
     public pMenuPrincipal() {
         setTitle("MENÚ PRINCIPAL");
         setSize(800, 600);
@@ -44,8 +49,6 @@ public class pMenuPrincipal extends JFrame {
         gbc.gridwidth = 1;
         gbc.gridy = 2;
 
-
-  
         addButton(panel, "PPrincipal", e -> {
             pPrincipal Principal = new pPrincipal();
             Principal.setVisible(true);
@@ -63,8 +66,6 @@ public class pMenuPrincipal extends JFrame {
             Inicio.setVisible(true);
             dispose();
         });
-
-
         add(panel);
 
         setVisible(true);
@@ -106,7 +107,7 @@ public class pMenuPrincipal extends JFrame {
     }
 }
 
-class RoundButtonBorder extends AbstractBorder {
+   class RoundButtonBorder extends AbstractBorder {
     private int radius;
 
     public RoundButtonBorder(int radius) {
