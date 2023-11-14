@@ -41,7 +41,22 @@ public class pListaParaReserva extends JFrame {
         });
 
         JButton misReservasButton = new JButton("Mis Reservas");
-        JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+        JButton paginaCreditos = new JButton("Créditos");
+
+        // Añadimos un ActionListener al botón
+        paginaCreditos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Creamos una instancia de la clase pPrincipal
+            	SwingUtilities.invokeLater(pCreditos::new);
+
+                // Hacemos visible el JFrame de la clase pPrincipal
+
+
+                // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+                dispose(); // Para cerrar
+            }
+        });
 
         FlowLayout buttonLayout = new FlowLayout();
         buttonLayout.setHgap(85);
@@ -49,7 +64,7 @@ public class pListaParaReserva extends JFrame {
 
         toolBar.add(paginaPrincipalButton);
         toolBar.add(misReservasButton);
-        toolBar.add(nuevasReservasButton);
+        toolBar.add(paginaCreditos);
 
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");

@@ -63,10 +63,20 @@ public class pMenuPrincipal extends JFrame {
 
         JButton misReservasButton = new JButton("Mis Reservas");
         JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+        nuevasReservasButton.addActionListener(e -> {
+            // Creamos una instancia de la clase pMenuPrincipal
+            pListaParaReserva mp = new pListaParaReserva();
 
+            // Hacemos visible el JFrame de la clase pMenuPrincipal
+            mp.setVisible(true);
+
+            // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+            setVisible(false); // Para ocultar
+            // dispose(); // Para cerrar
+        });
         // Creamos un FlowLayout para los botones y le asignamos un espacio entre ellos
         FlowLayout buttonLayout = new FlowLayout();
-        buttonLayout.setHgap(20); // Puedes cambiar el valor según tu preferencia
+        buttonLayout.setHgap(85); // Puedes cambiar el valor según tu preferencia
         toolBar.setLayout(buttonLayout);
 
         toolBar.add(nuevasReservasButton);

@@ -31,15 +31,42 @@ public class pMisReservas {
                 }
             });
 
-            JButton misReservasButton = new JButton("Mis Reservas");
             JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+            nuevasReservasButton.addActionListener(e -> {
+                // Creamos una instancia de la clase pMenuPrincipal
+                pListaParaReserva mp = new pListaParaReserva();
 
+                // Hacemos visible el JFrame de la clase pMenuPrincipal
+                mp.setVisible(true);
+
+                // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+                setVisible(false); // Para ocultar
+                // dispose(); // Para cerrar
+            });
+            
+            JButton paginaCreditos = new JButton("Créditos");
+
+            // Añadimos un ActionListener al botón
+            paginaCreditos.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Creamos una instancia de la clase pPrincipal
+                	SwingUtilities.invokeLater(pCreditos::new);
+
+                    // Hacemos visible el JFrame de la clase pPrincipal
+
+
+                    // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+                    pMisReservas.dispose(); // Para cerrar
+                }
+            });
+            
             FlowLayout buttonLayout = new FlowLayout();
             buttonLayout.setHgap(95);
             toolBar.setLayout(buttonLayout);
             toolBar.add(paginaPrincipalButton);
-            toolBar.add(misReservasButton);
             toolBar.add(nuevasReservasButton);
+            toolBar.add(paginaCreditos);
 
             JButton perfilButton = new JButton();
             ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
@@ -77,7 +104,12 @@ public class pMisReservas {
         });
     }
 
-    private static JPanel createReservationPanel() {
+    protected static void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static JPanel createReservationPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -104,7 +136,7 @@ public class pMisReservas {
         return panel;
     }
 
-	public void setVisible(boolean b) {
+	public static void setVisible(boolean b) {
 		// TODO Auto-generated method stub
 		
 	}
