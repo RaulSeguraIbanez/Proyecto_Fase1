@@ -26,10 +26,10 @@ public class pCreditos extends JFrame {
     private JButton irAPrincipalButton;
     private JTextArea creditosTextArea; // Área de texto para mostrar los créditos
 
-    private ArrayList<Double> creditosComprados;
+   
 
     public pCreditos() {
-        creditosComprados = new ArrayList<>();
+        
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("CRÉDITOS");
@@ -69,9 +69,7 @@ public class pCreditos extends JFrame {
         comprarButton.addActionListener(e -> comprarCreditos());
         panel.add(comprarButton, gbc);
 
-        verCreditosButton = new JButton("Ver Créditos");
-        verCreditosButton.addActionListener(e -> verCreditos());
-        panel.add(verCreditosButton, gbc);
+       
 
         inicioButton = new JButton("IR AL MENÚ PRINCIPAL");
         inicioButton.addActionListener(e -> JOptionPane.showMessageDialog(pCreditos.this, " pMisReservas"));
@@ -120,8 +118,8 @@ public class pCreditos extends JFrame {
 
             if (isValidCreditCardNumber(numeroTarjeta)) {
                 double creditosComprados = Double.parseDouble(JOptionPane.showInputDialog("Ingresa la cantidad de créditos a comprar:"));
-                this.creditosComprados.add(creditosComprados);
-                actualizarCreditosTextArea(); // Actualizar el área de texto
+              
+                 // Actualizar el área de texto
                 JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos añadidos a tu cuenta.");
             } else {
                 JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
@@ -131,18 +129,9 @@ public class pCreditos extends JFrame {
         }
     }
 
-    private void verCreditos() {
-        actualizarCreditosTextArea();
-        JOptionPane.showMessageDialog(this, creditosTextArea, "Créditos Comprados", JOptionPane.PLAIN_MESSAGE);
-    }
+   
 
-    private void actualizarCreditosTextArea() {
-        StringBuilder creditosText = new StringBuilder();
-        for (Double credito : creditosComprados) {
-            creditosText.append(credito).append("€\n");
-        }
-        creditosTextArea.setText(creditosText.toString());
-    }
+  
 
     private boolean isValidCreditCardNumber(String cardNumber) {
         return Pattern.matches("\\d{16}", cardNumber);
