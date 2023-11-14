@@ -49,23 +49,7 @@ public class pMenuPrincipal extends JFrame {
         gbc.gridwidth = 1;
         gbc.gridy = 2;
 
-        addButton(panel, "PPrincipal", e -> {
-            pPrincipal Principal = new pPrincipal();
-            Principal.setVisible(true);
-            dispose();
-        });
-
-        addButton(panel, "pMisReservas", e -> {
-            pMisReservas MisReservas = new pMisReservas();
-            MisReservas.setVisible(true);
-            dispose();
-        });
-
-        addButton(panel, "pInicio", e -> {
-            pInicio Inicio = new pInicio();
-            Inicio.setVisible(true);
-            dispose();
-        });
+       
         add(panel);
 
         setVisible(true);
@@ -89,6 +73,24 @@ public class pMenuPrincipal extends JFrame {
 
         // Add ActionListener to the button
         button.addActionListener(actionListener);
+        
+        addButton(panel, "PPrincipal", e -> {
+            pPrincipal Principal = new pPrincipal();
+            Principal.setVisible(true);
+            this.dispose();
+        });
+
+        addButton(panel, "pMisReservas", e -> {
+            pMisReservas MisReservas = new pMisReservas();
+            MisReservas.setVisible(true);
+            this.dispose();
+        });
+
+        addButton(panel, "pInicio", e -> {
+            pInicio Inicio = new pInicio();
+            Inicio.setVisible(true);
+            this.dispose();
+        });
 
         panel.add(button, gbc);
     }
