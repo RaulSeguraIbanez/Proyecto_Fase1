@@ -105,8 +105,8 @@ public class pCreditos extends JFrame {
         try {
             String input = textField.getText();
             double numero = Double.parseDouble(input);
-            double resultado = numero * 10;
-            label.setText("CRÉDITOS: " + resultado + "€");
+            double resultado = numero / 10;
+            label.setText("CRÉDITOS: " + resultado);
         } catch (NumberFormatException e) {
             label.setText("¡Ingresa un número válido!");
         }
