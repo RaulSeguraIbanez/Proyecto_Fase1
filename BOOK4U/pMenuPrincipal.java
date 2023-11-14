@@ -45,27 +45,28 @@ public class pMenuPrincipal extends JFrame {
         gbc.gridy = 2;
 
 
-  
         addButton(panel, "PPrincipal", e -> {
-       	 pPrincipal Principal = new pPrincipal();
- 	    Principal.setVisible(true);
- 	    dispose(); // Cierra la ventana actual (pCreditos)
- 	});
+            pPrincipal Principal = new pPrincipal();
+            Principal.setVisible(true);
+            dispose();
+        });
+
         addButton(panel, "pMisReservas", e -> {
-        	pMisReservas MisReservas = new pMisReservas();
-        	MisReservas.setVisible(true);
-    	    dispose(); // Cierra la ventana actual (pCreditos)
-    	});
+            pMisReservas MisReservas = new pMisReservas();
+            MisReservas.setVisible(true);
+            dispose();
+        });
 
         addButton(panel, "pInicio", e -> {
-       	 pInicio Inicio = new pInicio();
-       	Inicio.setVisible(true);
- 	    dispose(); // Cierra la ventana actual (pCreditos)
- 	});
+            pInicio Inicio = new pInicio();
+            Inicio.setVisible(true);
+            dispose();
+        });
 
-        add(panel);
 
-        setVisible(true);
+        //add(panel);
+
+       // setVisible(true);
     }
 
     private void addButton(JPanel panel, String text, ActionListener actionListener) {
