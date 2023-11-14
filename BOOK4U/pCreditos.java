@@ -1,12 +1,4 @@
 package BOOK4U;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -117,9 +109,7 @@ public class pCreditos extends JFrame {
             String numeroTarjeta = JOptionPane.showInputDialog("Ingresa tu número de tarjeta de crédito:");
 
             if (isValidCreditCardNumber(numeroTarjeta)) {
-                double creditosComprados = Double.parseDouble(JOptionPane.showInputDialog("Ingresa la cantidad de créditos a comprar:"));
-              
-                 // Actualizar el área de texto
+                
                 JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos añadidos a tu cuenta.");
             } else {
                 JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
