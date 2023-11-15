@@ -1,4 +1,5 @@
 package BOOK4U;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -48,10 +49,9 @@ public class pListaParaReserva extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creamos una instancia de la clase pPrincipal
-            	SwingUtilities.invokeLater(pCreditos::new);
+                SwingUtilities.invokeLater(pCreditos::new);
 
                 // Hacemos visible el JFrame de la clase pPrincipal
-
 
                 // Opcionalmente, podemos ocultar o cerrar el JFrame actual
                 dispose(); // Para cerrar
@@ -102,7 +102,7 @@ public class pListaParaReserva extends JFrame {
         refreshData(menuPanel);
     }
 
-    private void refreshData(JPanel menuPanel) {
+    public void refreshData(JPanel menuPanel) {
         // Limpiar el panel antes de volver a cargar los datos
         menuPanel.removeAll();
 
@@ -118,9 +118,11 @@ public class pListaParaReserva extends JFrame {
                     String coste = resultSet.getString("CREDITOS_DIA");
                     String fotoUrl = resultSet.getString("FOTO");
 
-                    // Crear un botón para cada estancia que contenga la foto y la información
-                    JButton estanciaButton = new JButton();
+                    // Crear un panel para cada estancia que contendrá la foto y la información
+                    JPanel estanciaPanel = new JPanel(new BorderLayout());
 
+                    // Crear un botón para la imagen de la estancia
+                    JButton estanciaButton = new JButton();
                     // Configurar el botón para mostrar la foto
                     try {
                         ImageIcon fotoIcon = new ImageIcon(fotoUrl);
@@ -129,17 +131,16 @@ public class pListaParaReserva extends JFrame {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+                    // Establecer el aspecto del botón para que no se vea como un botón
+                    estanciaButton.setBorderPainted(false);
+                    estanciaButton.setFocusPainted(false);
+                    estanciaButton.setContentAreaFilled(false);
 
                     // Configurar el botón para mostrar la información de la estancia
                     estanciaButton.setToolTipText("<html><b>ID:</b> " + id +
                             "<br><b>Nombre:</b> " + nombre +
                             "<br><b>Dirección:</b> " + direccion +
                             "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
-
-                    // Establecer el aspecto del botón para que no se vea como un botón
-                    estanciaButton.setBorderPainted(false);
-                    estanciaButton.setFocusPainted(false);
-                    estanciaButton.setContentAreaFilled(false);
 
                     // Agregar un ActionListener para manejar el clic en el botón
                     estanciaButton.addActionListener(new ActionListener() {
@@ -150,8 +151,24 @@ public class pListaParaReserva extends JFrame {
                         }
                     });
 
-                    // Agregar el botón de la estancia al panel principal
-                    menuPanel.add(estanciaButton);
+                    // Crear un panel para el texto de la estancia
+                    JPanel textoPanel = new JPanel(new BorderLayout());
+                    // Crear un JLabel para el texto
+                    JLabel textoLabel = new JLabel("<html><b>ID:</b> " + id +
+                            "<br><b>Nombre:</b> " + nombre +
+                            "<br><b>Dirección:</b> " + direccion +
+                            "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
+                    // Alinear el texto al centro
+                    textoLabel.setHorizontalAlignment(JLabel.CENTER);
+                    // Agregar el texto al panel
+                    textoPanel.add(textoLabel, BorderLayout.CENTER);
+
+                    // Agregar el botón y el texto al panel de la estancia
+                    estanciaPanel.add(estanciaButton, BorderLayout.CENTER);
+                    estanciaPanel.add(textoPanel, BorderLayout.SOUTH);
+
+                    // Agregar el panel de la estancia al panel principal
+                    menuPanel.add(estanciaPanel);
 
                     System.out.println(id + " " + nombre + " " + direccion + " " + coste + " " + fotoUrl);
                 }
@@ -167,7 +184,7 @@ public class pListaParaReserva extends JFrame {
 
     private void abrirNuevaReserva(int id) {
         // Crear una instancia de NuevaReserva y pasar la id al constructor
-    	pNuevaReserva nuevaReserva = new pNuevaReserva();
+        pNuevaReserva nuevaReserva = new pNuevaReserva(id);
         nuevaReserva.setVisible(true);
     }
 
