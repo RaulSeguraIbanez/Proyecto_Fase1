@@ -3,6 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -18,7 +22,9 @@ public class pCreditos extends JFrame {
     private JButton irAPrincipalButton;
     private JTextArea creditosTextArea; // Área de texto para mostrar los créditos
 
-   
+	private static final String USER = "23_24_DAM2_EHHMMM";
+	private static final String PWD = "ehhmmm_123";
+	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe"; 
 
     public pCreditos() {
         
@@ -93,7 +99,7 @@ public class pCreditos extends JFrame {
         setVisible(true);
     }
 
-    public void calcularResultado() {
+    public double calcularResultado() {
         try {
             String input = textField.getText();
             double numero = Double.parseDouble(input);
@@ -102,6 +108,7 @@ public class pCreditos extends JFrame {
         } catch (NumberFormatException e) {
             label.setText("¡Ingresa un número válido!");
         }
+		return 0;
     }
 
     private void comprarCreditos() {
@@ -109,11 +116,24 @@ public class pCreditos extends JFrame {
             String numeroTarjeta = JOptionPane.showInputDialog("Ingresa tu número de tarjeta de crédito:");
 
             if (isValidCreditCardNumber(numeroTarjeta)) {
-                
+                // Database connection and update
+                try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.3.26:1521:xe", "23_24_DAM2_EHHMMM", "ehhmmm_123")) {
+                    String updateQuery = "UPDATE usuarios SET creditos = creditos + ? WHERE username = ?";
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                        // Assuming 'username' is a column in your 'usuarios' table
+                        preparedStatement.setDouble(1, calcularResultado());
+                        preparedStatement.setString(2, "username_here"); // Replace with the actual username
+                        preparedStatement.executeUpdate();
+                    }
+                }
+
                 JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos añadidos a tu cuenta.");
             } else {
                 JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
             }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+            JOptionPane.showMessageDialog(this, "Error en la conexión a la base de datos.");
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
         }
