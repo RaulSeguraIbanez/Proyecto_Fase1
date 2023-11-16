@@ -122,7 +122,7 @@ public class pCreditos extends JFrame {
                     try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
                         // Assuming 'username' is a column in your 'usuarios' table
                         preparedStatement.setDouble(1, calcularResultado());
-                        preparedStatement.setString(2, "username_here"); // Replace with the actual username
+                        preparedStatement.setString(2, "23_24_DAM2_EHHMMM"); // Replace with the actual username
                         preparedStatement.executeUpdate();
                     }
                 }
