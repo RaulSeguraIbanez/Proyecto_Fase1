@@ -14,21 +14,21 @@ public class pCreditos extends JFrame {
     private JButton comprarCreditosButton;
     private JButton irAPrincipalButton;
     private JTextField dineroTextField;
+    private JLabel fotoLabel;
+
+    private static final String USER = "23_24_DAM2_EHHMMM";
+    private static final String PWD = "ehhmmm_123";
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     public pCreditos() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Compra de Créditos");
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(800, 600));
+        getContentPane().setBackground(new Color(255, 210, 175));
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("CRÉDITOS");
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(100, 20, 100, 20);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.setBackground(new Color(255, 210, 175));
-      panel.setPreferredSize(new Dimension(800, 64));
-        
         JPanel panelCentral = new JPanel(new GridBagLayout());
-       
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -45,71 +45,53 @@ public class pCreditos extends JFrame {
         gbc.gridx = 3;
         comprarCreditosButton = new JButton("Comprar Créditos");
         panelCentral.add(comprarCreditosButton, gbc);
-
         convertirDineroButton.addActionListener(e -> convertirADolares());
         comprarCreditosButton.addActionListener(e -> comprarCreditos());
 
         add(panelCentral, BorderLayout.CENTER);
 
-        // Botón para ir a la ventana principal
+        gbc.gridx = 3;
         irAPrincipalButton = new JButton("Ir a Principal");
         irAPrincipalButton.addActionListener(e -> abrirVentanaPrincipal());
         add(irAPrincipalButton, BorderLayout.SOUTH);
-        add(panelCentral);
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    public void comprarCreditos() {
-        try {
-            String cantidadDineroStr = dineroTextField.getText();
-            double cantidadDinero = Double.parseDouble(cantidadDineroStr);
-            String numeroTarjeta = JOptionPane.showInputDialog("Ingresa tu número de tarjeta de crédito:");
-            
-            if (isValidCreditCardNumber(numeroTarjeta)) {
-                double creditosComprados = cantidadDinero;
-                JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos comprados: " + creditosComprados);
-            } else {
-                JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
+    public double convertirADolares(double cantidad) {
+        double factorConversion = 10;
+        return cantidad * factorConversion;
+    }
+
+    public boolean actualizarCreditosEnBD(double creditosComprados) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+            String updateQuery = "UPDATE usuario SET creditos = creditos + ? WHERE dni = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+                preparedStatement.setDouble(1, creditosComprados);
+                String dniUsuario = obtenerDniDeUsuario(); // Reemplaza con la lógica para obtener el DNI del usuario
+                preparedStatement.setString(2, dniUsuario);
+                int filasAfectadas = preparedStatement.executeUpdate();
+
+                return filasAfectadas > 0; // Verifica si se afectó al menos una fila (actualización exitosa)
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad válida de dinero.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error en la conexión a la base de datos.");
+            return false; // Error en la conexión a la base de datos
         }
     }
-    public void actualizarCreditosEnBD(double creditosComprados) throws SQLException {
-        // Configuración de la conexión a la base de datos
-    	 String USER = "23_24_DAM2_EHHMMM";
-		 String PWD = "ehhmmm_123";
-		 String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe"; 
 
-         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-               // Query para actualizar los créditos en la tabla usuario
-               String updateQuery = "UPDATE usuario SET creditos = creditos + ? WHERE dni = ?";
-    
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-        preparedStatement.setDouble(1, creditosComprados);
-        String dniUsuario = obtenerNombreDeUsuario(); // Debes implementar esta función para obtener el DNI del usuario
-        preparedStatement.setString(2, dniUsuario);
-        preparedStatement.executeUpdate();
-           } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error en la conexión a la base de datos.");
-     }
-}
+    public String obtenerDniDeUsuario() {
+       
+        return dineroTextField.getText();
+    }
 
 
-        }
-
-
-
-    private String obtenerNombreDeUsuario() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isValidCreditCardNumber(String numeroTarjeta) {
-        if (!Pattern.matches("\\d{16}", numeroTarjeta)) {
+    public boolean isValidCreditCardNumber(String numeroTarjeta) {
+        if (!Pattern.matches("\\{16}", numeroTarjeta)) {
             return false;
         }
         int sum = 0;
@@ -133,22 +115,41 @@ public class pCreditos extends JFrame {
         try {
             String cantidadDineroStr = dineroTextField.getText();
             double cantidadDinero = Double.parseDouble(cantidadDineroStr);
-            double factorConversion = 10;
-            double creditos = cantidadDinero * factorConversion;
+            double creditos = convertirADolares(cantidadDinero);
             JOptionPane.showMessageDialog(this, "Convertido a créditos: " + creditos);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad válida de dinero.");
         }
     }
 
-    public void abrirVentanaPrincipal() {
-      
-    	pMenuPrincipal ventanaPrincipal = new pMenuPrincipal();
-        ventanaPrincipal.setVisible(true);
+    public void comprarCreditos() {
+        try {
+            String cantidadDineroStr = dineroTextField.getText();
+            double cantidadDinero = Double.parseDouble(cantidadDineroStr);
+            String numeroTarjeta = JOptionPane.showInputDialog("Ingresa tu número de tarjeta de crédito:");
 
-        dispose();
+            if (isValidCreditCardNumber(numeroTarjeta)) {
+                double creditosComprados = convertirADolares(cantidadDinero);
+
+                // Aquí puedes agregar la lógica para actualizar la base de datos
+                if (actualizarCreditosEnBD(creditosComprados)) {
+                    JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos comprados: " + creditosComprados);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar la base de datos. Por favor, inténtalo de nuevo.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad válida de dinero.");
+        }
     }
 
+    public void abrirVentanaPrincipal() {
+        pMenuPrincipal ventanaPrincipal = new pMenuPrincipal();
+        ventanaPrincipal.setVisible(true);
+        dispose();
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(pCreditos::new);
