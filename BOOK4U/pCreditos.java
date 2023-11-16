@@ -1,33 +1,22 @@
 package BOOK4U;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class pCreditos extends JFrame {
 
-    private JTextField textField;
-    private JButton obtenerButton;
-    private JButton comprarButton;
-    private JButton verCreditosButton;
-    private JButton menuPrincipal;
-    private JButton inicioButton;
-    private JLabel label;
+    private JButton convertirDineroButton;
+    private JButton comprarCreditosButton;
     private JButton irAPrincipalButton;
-    private JTextArea creditosTextArea; // Área de texto para mostrar los créditos
-
-	private static final String USER = "23_24_DAM2_EHHMMM";
-	private static final String PWD = "ehhmmm_123";
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe"; 
+    private JTextField dineroTextField;
 
     public pCreditos() {
-        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("CRÉDITOS");
@@ -36,119 +25,132 @@ public class pCreditos extends JFrame {
         gbc.insets = new Insets(100, 20, 100, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.setBackground(new Color(255, 210, 175));
-      //  panel.setPreferredSize(new Dimension(800, 64));
-
+      panel.setPreferredSize(new Dimension(800, 64));
+        
+        JPanel panelCentral = new JPanel(new GridBagLayout());
+       
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(new JLabel("INTRODUCE UN NÚMERO:"), gbc);
+        gbc.gridy = 0;
+        panelCentral.add(new JLabel("Cantidad de Dinero:"), gbc);
 
         gbc.gridx = 1;
-        gbc.weightx = 0;
-        textField = new JTextField(10);
-        panel.add(textField, gbc);
+        dineroTextField = new JTextField(10);
+        panelCentral.add(dineroTextField, gbc);
 
         gbc.gridx = 2;
-        gbc.weightx = 2;
-        obtenerButton = new JButton("OBTENER");
-        obtenerButton.addActionListener(e -> calcularResultado());
-        panel.add(obtenerButton, gbc);
+        convertirDineroButton = new JButton("Convertir a Créditos");
+        panelCentral.add(convertirDineroButton, gbc);
 
-        gbc.gridx = 10;
-        gbc.gridwidth = 0;
-        gbc.gridheight = 1;
-        label = new JLabel(" TUS CRÉDITOS:");
-        panel.add(label, gbc);
+        gbc.gridx = 3;
+        comprarCreditosButton = new JButton("Comprar Créditos");
+        panelCentral.add(comprarCreditosButton, gbc);
 
-        gbc.gridy = 2;
-        gbc.gridx = 1;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        comprarButton = new JButton("Comprar Créditos");
-        comprarButton.addActionListener(e -> comprarCreditos());
-        panel.add(comprarButton, gbc);
+        convertirDineroButton.addActionListener(e -> convertirADolares());
+        comprarCreditosButton.addActionListener(e -> comprarCreditos());
 
-       
+        add(panelCentral, BorderLayout.CENTER);
 
-        inicioButton = new JButton("IR AL MENÚ PRINCIPAL");
-        inicioButton.addActionListener(e -> JOptionPane.showMessageDialog(pCreditos.this, " pMisReservas"));
-        panel.add(inicioButton, gbc);
-
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        irAPrincipalButton = new JButton("IR A MENÚ PRINCIPAL");
-        irAPrincipalButton.addActionListener(e -> {
-        	 pMenuPrincipal menuPrincipal = new pMenuPrincipal();
-        	    menuPrincipal.setVisible(true);
-        	    dispose(); // Cierra la ventana actual (pCreditos)
-        	});
-        panel.add(irAPrincipalButton, gbc);
-
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 2;
-
-        creditosTextArea = new JTextArea(5, 20); // Área de texto para mostrar créditos
-        creditosTextArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(creditosTextArea);
-        panel.add(scrollPane, gbc);
-
-        add(panel);
-
+        // Botón para ir a la ventana principal
+        irAPrincipalButton = new JButton("Ir a Principal");
+        irAPrincipalButton.addActionListener(e -> abrirVentanaPrincipal());
+        add(irAPrincipalButton, BorderLayout.SOUTH);
+        add(panelCentral);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    public double calcularResultado() {
+    public void comprarCreditos() {
         try {
-            String input = textField.getText();
-            double numero = Double.parseDouble(input);
-            double resultado = numero / 10;
-            label.setText("CRÉDITOS: " + resultado);
-        } catch (NumberFormatException e) {
-            label.setText("¡Ingresa un número válido!");
-        }
-		return 0;
-    }
-
-    private void comprarCreditos() {
-        try {
+            String cantidadDineroStr = dineroTextField.getText();
+            double cantidadDinero = Double.parseDouble(cantidadDineroStr);
             String numeroTarjeta = JOptionPane.showInputDialog("Ingresa tu número de tarjeta de crédito:");
-
+            
             if (isValidCreditCardNumber(numeroTarjeta)) {
-                // Database connection and update
-                try (Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.3.26:1521:xe", "23_24_DAM2_EHHMMM", "ehhmmm_123")) {
-                    String updateQuery = "UPDATE usuarios SET creditos = creditos + ? WHERE username = ?";
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                        // Assuming 'username' is a column in your 'usuarios' table
-                        preparedStatement.setDouble(1, calcularResultado());
-                        preparedStatement.setString(2, "23_24_DAM2_EHHMMM"); // Replace with the actual username
-                        preparedStatement.executeUpdate();
-                    }
-                }
-
-                JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos añadidos a tu cuenta.");
+                double creditosComprados = cantidadDinero;
+                JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos comprados: " + creditosComprados);
             } else {
                 JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); 
-            JOptionPane.showMessageDialog(this, "Error en la conexión a la base de datos.");
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Número de tarjeta de crédito no válido. Por favor, verifica el número.");
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad válida de dinero.");
+        }
+    }
+    public void actualizarCreditosEnBD(double creditosComprados) throws SQLException {
+        // Configuración de la conexión a la base de datos
+    	 String USER = "23_24_DAM2_EHHMMM";
+		 String PWD = "ehhmmm_123";
+		 String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe"; 
+
+         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+               // Query para actualizar los créditos en la tabla usuario
+               String updateQuery = "UPDATE usuario SET creditos = creditos + ? WHERE dni = ?";
+    
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        preparedStatement.setDouble(1, creditosComprados);
+        String dniUsuario = obtenerNombreDeUsuario(); // Debes implementar esta función para obtener el DNI del usuario
+        preparedStatement.setString(2, dniUsuario);
+        preparedStatement.executeUpdate();
+           } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error en la conexión a la base de datos.");
+     }
+}
+
+
+        }
+
+
+
+    private String obtenerNombreDeUsuario() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isValidCreditCardNumber(String numeroTarjeta) {
+        if (!Pattern.matches("\\d{16}", numeroTarjeta)) {
+            return false;
+        }
+        int sum = 0;
+        boolean alternate = false;
+        char[] digits = numeroTarjeta.toCharArray();
+        for (int i = digits.length - 1; i >= 0; i--) {
+            int digit = Character.getNumericValue(digits[i]);
+            if (alternate) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+            sum += digit;
+            alternate = !alternate;
+        }
+        return sum % 10 == 0;
+    }
+
+    public void convertirADolares() {
+        try {
+            String cantidadDineroStr = dineroTextField.getText();
+            double cantidadDinero = Double.parseDouble(cantidadDineroStr);
+            double factorConversion = 10;
+            double creditos = cantidadDinero * factorConversion;
+            JOptionPane.showMessageDialog(this, "Convertido a créditos: " + creditos);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad válida de dinero.");
         }
     }
 
-   
+    public void abrirVentanaPrincipal() {
+      
+    	pMenuPrincipal ventanaPrincipal = new pMenuPrincipal();
+        ventanaPrincipal.setVisible(true);
 
-  
-
-    private boolean isValidCreditCardNumber(String cardNumber) {
-        return Pattern.matches("\\d{16}", cardNumber);
+        dispose();
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(pCreditos::new);
     }
 }
-//
