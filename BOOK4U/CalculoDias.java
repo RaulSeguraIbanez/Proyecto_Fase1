@@ -13,12 +13,6 @@ public class CalculoDias {
     private static final String PWD = "ehhmmm_123";
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
     
-    private static String dniUsuario;
-
-    public CalculoDias() {
-        // Obtener el DNI del usuario desde pFunciones
-        this.dniUsuario = pFunciones.dniUsuario;
-    }
 
     public static String calcularReserva(Date fechaInicio, Date fechaFin, int precioPorDia, int estanciaId) {
         // Calcula la cantidad de días entre las dos fechas
@@ -39,7 +33,7 @@ public class CalculoDias {
 
         // Imprime los datos antes de insertar en la base de datos
         System.out.println("Datos para INSERT:\n" +
-                "DNI del usuario: " + dniUsuario + "\n" +
+                "DNI del usuario: " + pFunciones.dniUsuario + "\n" +
                 "ID de estancia: " + estanciaId + "\n" +
                 "Precio total: " + precioTotal);
 
@@ -57,7 +51,7 @@ public class CalculoDias {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, precioTotal);
                 statement.setInt(2, estanciaId);
-                statement.setString(3, dniUsuario);
+                statement.setString(3, pFunciones.dniUsuario);
                 statement.setDate(4, new java.sql.Date(fechaInicio.getTime()));
                 statement.setDate(5, new java.sql.Date(fechaFin.getTime()));
                 statement.executeUpdate();

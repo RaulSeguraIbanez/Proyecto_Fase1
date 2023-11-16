@@ -42,8 +42,8 @@ public class pNuevaReserva {
         paginaPrincipalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pMenuPrincipal frame = new pMenuPrincipal();
-                frame.setVisible(true);
+                pMenuPrincipal mp = new pMenuPrincipal();
+                mp.setVisible(true);
                 frame.dispose();
             }
         });
