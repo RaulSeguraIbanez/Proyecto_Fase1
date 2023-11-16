@@ -15,7 +15,18 @@ public class pLogin extends JPanel {
         setPreferredSize(new Dimension(800, 700));
         setBackground(Color.WHITE);
         setLayout(null);
+        centrarEnPantalla();
+    }
 
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
+
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+
+        setLocation(x, y);
+    
         JLabel label1 = new JLabel("Correo: ");
         JLabel label2 = new JLabel("Contraseña: ");
         label1.setBounds(200, 460, 100, 20);

@@ -19,7 +19,18 @@ public class pListaParaReserva extends JFrame {
         setTitle("Ventana Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
+        centrarEnPantalla();
+    }
 
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
+
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+
+        setLocation(x, y);
+    
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(255, 210, 175));
 
@@ -186,6 +197,7 @@ public class pListaParaReserva extends JFrame {
         // Crear una instancia de NuevaReserva y pasar la id al constructor
         pNuevaReserva nuevaReserva = new pNuevaReserva(id);
         nuevaReserva.setVisible(true);
+        
     }
 
     public static void main(String[] args) {

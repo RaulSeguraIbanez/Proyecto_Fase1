@@ -18,7 +18,18 @@ public class pPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 550);
         setLocationRelativeTo(null);
+        centrarEnPantalla();
+    }
 
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
+
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+
+        setLocation(x, y);
+    
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         profileImage = loadImage();

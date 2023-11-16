@@ -40,7 +40,7 @@ public class pMisReservas {
                 mp.setVisible(true);
 
                 // Opcionalmente, podemos ocultar o cerrar el JFrame actual
-                setVisible(false); // Para ocultar
+                frame.dispose(); // Para ocultar
                 // dispose(); // Para cerrar
             });
             
@@ -57,7 +57,7 @@ public class pMisReservas {
 
 
                     // Opcionalmente, podemos ocultar o cerrar el JFrame actual
-                    pMisReservas.dispose(); // Para cerrar
+                    frame.dispose(); // Para cerrar
                 }
             });
             
@@ -95,7 +95,6 @@ public class pMisReservas {
             JScrollPane scrollPane = new JScrollPane(contentPanel);
             mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-            // Fondo
             mainPanel.setBackground(new Color(255, 210, 175));
 
             frame.add(mainPanel);

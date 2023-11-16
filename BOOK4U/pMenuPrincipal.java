@@ -23,7 +23,18 @@ public class pMenuPrincipal extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         setBackground(new Color(255, 210, 175));
+        centrarEnPantalla();
+    }
 
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
+
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+
+        setLocation(x, y);
+    
         // Añadir la JToolBar
         add(createToolBar(), BorderLayout.NORTH);
 
@@ -62,6 +73,16 @@ public class pMenuPrincipal extends JFrame {
         });
 
         JButton misReservasButton = new JButton("Mis Reservas");
+        misReservasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abre la página MisReservas
+            	pMisReservas mp = new pMisReservas();
+            	mp.setVisible(true);
+
+                // Cierra el JFrame actual
+                            }
+        });
         JButton nuevasReservasButton = new JButton("Nuevas Reservas");
         nuevasReservasButton.addActionListener(e -> {
             // Creamos una instancia de la clase pMenuPrincipal
@@ -71,8 +92,8 @@ public class pMenuPrincipal extends JFrame {
             mp.setVisible(true);
 
             // Opcionalmente, podemos ocultar o cerrar el JFrame actual
-            setVisible(false); // Para ocultar
-            // dispose(); // Para cerrar
+            dispose();
+           
         });
         // Creamos un FlowLayout para los botones y le asignamos un espacio entre ellos
         FlowLayout buttonLayout = new FlowLayout();

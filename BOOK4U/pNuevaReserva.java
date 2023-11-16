@@ -42,14 +42,31 @@ public class pNuevaReserva {
         paginaPrincipalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pMenuPrincipal mp = new pMenuPrincipal();
-                mp.setVisible(true);
+                pMenuPrincipal frame = new pMenuPrincipal();
+                frame.setVisible(true);
                 frame.dispose();
             }
         });
 
         JButton misReservasButton = new JButton("Mis Reservas");
+        misReservasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            	pMisReservas mp = new pMisReservas();
+            	mp.setVisible(true);
+
+                // Cierra el JFrame actual
+                frame.dispose();
+            }
+        });
         JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+        nuevasReservasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });        
 
         FlowLayout buttonLayout = new FlowLayout();
         buttonLayout.setHgap(20);

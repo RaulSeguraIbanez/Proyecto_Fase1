@@ -16,7 +16,18 @@ public class pInicio extends JPanel {
         // Agregar los botones al panel principal
         add(boton1);
         add(boton2);
+        centrarEnPantalla();
+    }
 
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
+
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
+
+        setLocation(x, y);
+    
         ImageIcon imageIcon = new ImageIcon("src/imagenes/LogoBOOK4U.png"); // Reemplaza con la ruta de tu imagen
 
         int frameWidth = 800;
