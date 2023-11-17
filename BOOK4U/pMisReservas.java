@@ -53,7 +53,18 @@ public class pMisReservas extends JFrame {
             // dispose(); // Para cerrar
         });
 
-        JButton misReservasButton = new JButton("Mis Reservas");
+        JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+        nuevasReservasButton.addActionListener(e -> {
+            // Creamos una instancia de la clase pMenuPrincipal
+            pListaParaReserva mp = new pListaParaReserva();
+
+            // Hacemos visible el JFrame de la clase pMenuPrincipal
+            mp.setVisible(true);
+
+            // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+            dispose();
+           
+        });
         JButton paginaCreditos = new JButton("Créditos");
 
         // Añadimos un ActionListener al botón
@@ -75,7 +86,7 @@ public class pMisReservas extends JFrame {
         toolBar.setLayout(buttonLayout);
 
         toolBar.add(paginaPrincipalButton);
-        toolBar.add(misReservasButton);
+        toolBar.add(nuevasReservasButton);
         toolBar.add(paginaCreditos);
 
         JButton perfilButton = new JButton();
