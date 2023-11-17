@@ -21,20 +21,28 @@ public class pCreditos extends JFrame {
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     public pCreditos() {
+    	 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Compra de Créditos");
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
-        getContentPane().setBackground(new Color(255, 210, 175));
-
+     // Crear el panelCentral con un nuevo color de fondo naranja
         JPanel panelCentral = new JPanel(new GridBagLayout());
+        panelCentral.setBackground(new Color(255, 210, 175)); // RGB para naranja
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+       // gbc.gridwidth = 0;
+        fotoLabel = new JLabel(new ImageIcon("src/imagenes/FotoPerfil.png")); // Reemplaza con la ruta correcta de tu imagen
+        panelCentral.add(fotoLabel, gbc);
+      
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;
         panelCentral.add(new JLabel("Cantidad de Dinero:"), gbc);
 
         gbc.gridx = 1;
+        gbc.gridy = 0;
         dineroTextField = new JTextField(10);
         panelCentral.add(dineroTextField, gbc);
 
