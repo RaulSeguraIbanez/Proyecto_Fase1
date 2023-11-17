@@ -79,6 +79,7 @@ public class pMenuPrincipal extends JFrame {
                 // Abre la página MisReservas
             	pMisReservas mp = new pMisReservas();
             	mp.setVisible(true);
+                dispose();
 
                 // Cierra el JFrame actual
                             }
