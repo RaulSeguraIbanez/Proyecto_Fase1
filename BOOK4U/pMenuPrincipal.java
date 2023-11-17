@@ -66,7 +66,7 @@ public class pMenuPrincipal extends JFrame {
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
-
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 // Opcionalmente, podemos ocultar o cerrar el JFrame actual
                 dispose(); // Para cerrar
             }
