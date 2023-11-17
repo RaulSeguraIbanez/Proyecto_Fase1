@@ -119,10 +119,14 @@ public class pMisReservas extends JFrame {
         menuPanel.removeAll();
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = '234567890' AND r.ID_ESTANCIA = e.ID_ESTANCIA  ORDER BY ID_ESTANCIA;";
-        	System.out.println(query);
-            try (PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = ? AND r.ID_ESTANCIA = e.ID_ESTANCIA  ORDER BY ID_ESTANCIA";
+
+        	// Crear el objeto PreparedStatement y asignar el valor del DNI al primer parámetro
+        	PreparedStatement statement = connection.prepareStatement(query);
+        	statement.setString(1, pFunciones.dniUsuario);
+
+        	// Ejecutar la consulta y obtener el resultado
+        	ResultSet resultSet = statement.executeQuery();
 
                 while (resultSet.next()) {
                     int id = resultSet.getInt("ID_ESTANCIA");
@@ -198,10 +202,10 @@ public class pMisReservas extends JFrame {
                 menuPanel.revalidate();
                 menuPanel.repaint();
             }
-        } catch (SQLException e) {
+         catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+}
 
     private void abrirNuevaReserva(int id) {
         // Crear una instancia de NuevaReserva y pasar la id al constructor
