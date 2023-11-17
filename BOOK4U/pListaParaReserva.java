@@ -53,6 +53,16 @@ public class pListaParaReserva extends JFrame {
         });
 
         JButton misReservasButton = new JButton("Mis Reservas");
+        misReservasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abre la página MisReservas
+            	pMisReservas mp = new pMisReservas();
+            	mp.setVisible(true);
+            	  setVisible(false);
+                // Cierra el JFrame actual
+                            }
+        });
         JButton paginaCreditos = new JButton("Créditos");
 
         // Añadimos un ActionListener al botón
