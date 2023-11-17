@@ -70,7 +70,7 @@ public class pCreditos extends JFrame {
 
     public double convertirADolares(double cantidad) {
         double factorConversion = 10;
-        return cantidad * factorConversion;
+        return cantidad / factorConversion;
     }
 
     public boolean actualizarCreditosEnBD(double creditosComprados) {
