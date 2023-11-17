@@ -4,139 +4,213 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class pMisReservas {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Mis reservas");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setLayout(new BorderLayout());
+public class pMisReservas extends JFrame {
+	private static final String USER = "23_24_DAM2_EHHMMM";
+    private static final String PWD = "ehhmmm_123";
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
-            // Menú
-            JPanel mainPanel = new JPanel(new BorderLayout());
-            mainPanel.setBackground(new Color(255, 210, 175));
+    public pMisReservas() {
+        setTitle("Mis Reservas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 800);
+        centrarEnPantalla();
+    }
 
-            JPanel northPanel = new JPanel(new BorderLayout());
-            JToolBar toolBar = new JToolBar();
-            toolBar.setFloatable(false);
-            toolBar.setPreferredSize(new Dimension(800, 64));
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
 
-            JButton paginaPrincipalButton = new JButton("Página principal");
-            paginaPrincipalButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    pMenuPrincipal mp = new pMenuPrincipal();
-                    mp.setVisible(true);
-                    frame.dispose();
-                }
-            });
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
 
-            JButton nuevasReservasButton = new JButton("Nuevas Reservas");
-            nuevasReservasButton.addActionListener(e -> {
-                // Creamos una instancia de la clase pMenuPrincipal
-                pListaParaReserva mp = new pListaParaReserva();
+        setLocation(x, y);
+    
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(255, 210, 175));
 
-                // Hacemos visible el JFrame de la clase pMenuPrincipal
-                mp.setVisible(true);
+        // Barra de herramientas
+        JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
+        toolBar.setPreferredSize(new Dimension(800, 70));
+
+        JButton paginaPrincipalButton = new JButton("Página principal");
+        paginaPrincipalButton.addActionListener(e -> {
+            // Creamos una instancia de la clase pMenuPrincipal
+            pMenuPrincipal mp = new pMenuPrincipal();
+
+            // Hacemos visible el JFrame de la clase pMenuPrincipal
+            mp.setVisible(true);
+
+            // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+            setVisible(false); // Para ocultar
+            // dispose(); // Para cerrar
+        });
+
+        JButton misReservasButton = new JButton("Mis Reservas");
+        JButton paginaCreditos = new JButton("Créditos");
+
+        // Añadimos un ActionListener al botón
+        paginaCreditos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Creamos una instancia de la clase pPrincipal
+                SwingUtilities.invokeLater(pCreditos::new);
+
+                // Hacemos visible el JFrame de la clase pPrincipal
 
                 // Opcionalmente, podemos ocultar o cerrar el JFrame actual
-                frame.dispose(); // Para ocultar
-                // dispose(); // Para cerrar
-            });
-            
-            JButton paginaCreditos = new JButton("Créditos");
-
-            // Añadimos un ActionListener al botón
-            paginaCreditos.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Creamos una instancia de la clase pPrincipal
-                	SwingUtilities.invokeLater(pCreditos::new);
-
-                    // Hacemos visible el JFrame de la clase pPrincipal
-
-
-                    // Opcionalmente, podemos ocultar o cerrar el JFrame actual
-                    frame.dispose(); // Para cerrar
-                }
-            });
-            
-            FlowLayout buttonLayout = new FlowLayout();
-            buttonLayout.setHgap(95);
-            toolBar.setLayout(buttonLayout);
-            toolBar.add(paginaPrincipalButton);
-            toolBar.add(nuevasReservasButton);
-            toolBar.add(paginaCreditos);
-
-            JButton perfilButton = new JButton();
-            ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
-            Image image = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(image);
-            perfilButton.setIcon(icon);
-
-            JPanel perfilPanel = new JPanel(new BorderLayout());
-            perfilPanel.add(perfilButton, BorderLayout.EAST);
-            toolBar.add(perfilPanel);
-
-            northPanel.add(toolBar, BorderLayout.NORTH);
-
-            mainPanel.add(northPanel, BorderLayout.NORTH);
-
-            // Panel de contenido
-            JPanel contentPanel = new JPanel();
-            contentPanel.setLayout(new GridLayout(0, 1)); // 2 elementos por fila
-
-            // Añadir elementos al panel de contenido
-            for (int i = 0; i < 7; i++) {
-                contentPanel.add(createReservationPanel());
+                dispose(); // Para cerrar
             }
-
-            // ScrollPane
-            JScrollPane scrollPane = new JScrollPane(contentPanel);
-            mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-            mainPanel.setBackground(new Color(255, 210, 175));
-
-            frame.add(mainPanel);
-            frame.setSize(800, 600);
-            frame.setVisible(true);
         });
+
+        FlowLayout buttonLayout = new FlowLayout();
+        buttonLayout.setHgap(85);
+        toolBar.setLayout(buttonLayout);
+
+        toolBar.add(paginaPrincipalButton);
+        toolBar.add(misReservasButton);
+        toolBar.add(paginaCreditos);
+
+        JButton perfilButton = new JButton();
+        ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
+        Image image = icon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(image);
+        perfilButton.setIcon(icon);
+
+        JPanel perfilPanel = new JPanel(new BorderLayout());
+        perfilPanel.add(perfilButton, BorderLayout.EAST);
+        toolBar.add(perfilPanel);
+
+        mainPanel.add(toolBar, BorderLayout.NORTH);
+
+        // Menú con información de estancias
+        JPanel menuPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Cambia según tus necesidades
+
+        // Botón de Refresh
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> {
+            // Lógica para volver a cargar la información de la base de datos
+            refreshData(menuPanel);
+        });
+
+        // Agregar el botón Refresh en la parte inferior
+        mainPanel.add(refreshButton, BorderLayout.SOUTH);
+
+        // JScrollPane para permitir el desplazamiento
+        JScrollPane scrollPane = new JScrollPane(menuPanel);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(mainPanel);
+        setVisible(true);
+
+        // Inicializar los datos al abrir la ventana
+        refreshData(menuPanel);
     }
 
-    protected static void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
+    public void refreshData(JPanel menuPanel) {
+        // Limpiar el panel antes de volver a cargar los datos
+        menuPanel.removeAll();
 
-	private static JPanel createReservationPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = '234567890' AND r.ID_ESTANCIA = e.ID_ESTANCIA  ORDER BY ID_ESTANCIA;";
+        	System.out.println(query);
+            try (PreparedStatement statement = connection.prepareStatement(query);
+                 ResultSet resultSet = statement.executeQuery()) {
 
-        // Imagen
-        JLabel imageLabel = new JLabel(new ImageIcon("src/imagenes/Casa1.jpg"));
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(imageLabel);
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("ID_ESTANCIA");
+                    String nombre = resultSet.getString("NOMBRE");
+                    String descripcion = resultSet.getString("DESCRIPCION");
+                    String direccion = resultSet.getString("DIRECCION");
+                    String coste = resultSet.getString("CREDITOS");
+                    Date fechaInicio = resultSet.getDate("FECHAINICIO");
+                    Date fechaFin = resultSet.getDate("FECHAFIN");
+                    String fotoUrl = resultSet.getString("FOTO");
+                    
 
-        // Dirección
-        JLabel addressLabel = new JLabel("Dirección: lel");
-        addressLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(addressLabel);
+                    // Crear un panel para cada estancia que contendrá la foto y la información
+                    JPanel estanciaPanel = new JPanel(new BorderLayout());
 
-        // Fechas
-        JLabel datesLabel = new JLabel("Fechas: lel");
-        datesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(datesLabel);
+                    // Crear un botón para la imagen de la estancia
+                    JButton estanciaButton = new JButton();
+                    // Configurar el botón para mostrar la foto
+                    try {
+                        ImageIcon fotoIcon = new ImageIcon(fotoUrl);
+                        Image image1 = fotoIcon.getImage().getScaledInstance(140, 170, Image.SCALE_SMOOTH);
+                        estanciaButton.setIcon(new ImageIcon(image1));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    // Establecer el aspecto del botón para que no se vea como un botón
+                    estanciaButton.setBorderPainted(false);
+                    estanciaButton.setFocusPainted(false);
+                    estanciaButton.setContentAreaFilled(false);
 
-        // Coste
-        JLabel costLabel = new JLabel("Coste: lel");
-        costLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(costLabel);
+                    // Configurar el botón para mostrar la información de la estancia
+                    estanciaButton.setToolTipText("<html><b>ID:</b> " + id +
+                            "<br><b>Nombre:</b> " + nombre +
+                            "<br><b>Dirección:</b> " + direccion +
+                            "<br><Fecha Inicio:</b>" + fechaInicio +
+                            "<br><Fecha Fin:</b>" + fechaFin +
+                            "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
 
-        return panel;
+                    // Agregar un ActionListener para manejar el clic en el botón
+                 /*   estanciaButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Aquí puedes agregar la lógica para abrir la pantalla NuevaReserva con la información correspondiente
+                            abrirNuevaReserva(id);
+                        }
+                    }); */ 
+
+                    // Crear un panel para el texto de la estancia
+                    JPanel textoPanel = new JPanel(new BorderLayout());
+                    // Crear un JLabel para el texto
+                    JLabel textoLabel = new JLabel("<html><b>ID:</b> " + id +
+                    		"<br><b>Nombre:</b> " + nombre +
+                            "<br><b>Dirección:</b> " + direccion +
+                            "<br><Fecha Inicio:</b>" + fechaInicio +
+                            "<br><Fecha Fin:</b>" + fechaFin +
+                            "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
+                    // Alinear el texto al centro
+                    textoLabel.setHorizontalAlignment(JLabel.CENTER);
+                    // Agregar el texto al panel
+                    textoPanel.add(textoLabel, BorderLayout.CENTER);
+
+                    // Agregar el botón y el texto al panel de la estancia
+                    estanciaPanel.add(estanciaButton, BorderLayout.CENTER);
+                    estanciaPanel.add(textoPanel, BorderLayout.SOUTH);
+
+                    // Agregar el panel de la estancia al panel principal
+                    menuPanel.add(estanciaPanel);
+
+                    System.out.println(id + " " + nombre + " " + direccion + " " + fechaInicio + " " + fechaFin + " " + coste + " " + fotoUrl);
+                }
+
+                // Actualizar la vista
+                menuPanel.revalidate();
+                menuPanel.repaint();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-	public static void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
+    private void abrirNuevaReserva(int id) {
+        // Crear una instancia de NuevaReserva y pasar la id al constructor
+        pNuevaReserva nuevaReserva = new pNuevaReserva(id);
+        nuevaReserva.setVisible(true);
+        
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new pMisReservas());
+    }
 }

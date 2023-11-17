@@ -199,9 +199,5 @@ public class pListaParaReserva extends JFrame {
         nuevaReserva.setVisible(true);
         
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new pListaParaReserva());
-    }
 }
 
