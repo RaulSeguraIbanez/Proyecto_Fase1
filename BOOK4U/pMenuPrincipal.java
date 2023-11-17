@@ -43,10 +43,8 @@ public class pMenuPrincipal extends JFrame {
         ImageIcon imagen = new ImageIcon("src/imagenes/LogoBOOK4U.png");
         JLabel labelImagen = new JLabel(imagen);
         panelCentral.add(labelImagen);
-        JPanel panelCentral1 = new JPanel(new GridBagLayout());
-        panelCentral1.setBackground(new Color(255, 210, 175)); // RGB para naranja
-        GridBagConstraints gbc = new GridBagConstraints();
-        add(panelCentral1, BorderLayout.CENTER);
+
+        add(panelCentral, BorderLayout.CENTER);
     }
 
     private JToolBar createToolBar() {
