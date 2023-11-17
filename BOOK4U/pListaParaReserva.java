@@ -158,8 +158,7 @@ public class pListaParaReserva extends JFrame {
                     estanciaButton.setContentAreaFilled(false);
 
                     // Configurar el botón para mostrar la información de la estancia
-                    estanciaButton.setToolTipText("<html><b>ID:</b> " + id +
-                            "<br><b>Nombre:</b> " + nombre +
+                    estanciaButton.setToolTipText("<html><b>Nombre:</b> " + nombre +
                             "<br><b>Dirección:</b> " + direccion +
                             "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
 
@@ -175,8 +174,7 @@ public class pListaParaReserva extends JFrame {
                     // Crear un panel para el texto de la estancia
                     JPanel textoPanel = new JPanel(new BorderLayout());
                     // Crear un JLabel para el texto
-                    JLabel textoLabel = new JLabel("<html><b>ID:</b> " + id +
-                            "<br><b>Nombre:</b> " + nombre +
+                    JLabel textoLabel = new JLabel("<html><b>Nombre:</b> " + nombre +
                             "<br><b>Dirección:</b> " + direccion +
                             "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
                     // Alinear el texto al centro
