@@ -43,6 +43,9 @@ public class pCreditos extends JFrame {
         ccvTextField = new JTextField(3);
 
         JButton comprarButton = new JButton("Comprar Créditos");
+        
+        JButton menuPrincipalButton = new JButton("Menú Principal");
+        formularioPanel.add(menuPrincipalButton);
 
         creditosLabel = new JLabel("Créditos disponibles: " + saldo + " - Fecha de compra: " + fechaCompra);
         creditosLabel.setForeground(Color.blue);
@@ -78,9 +81,23 @@ public class pCreditos extends JFrame {
                 comprarCreditos();
             }
         });
+        
+        menuPrincipalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirMenuPrincipal();
+            }
+        });
     }
 
-    private void comprarCreditos() {
+    protected void abrirMenuPrincipal() {
+    	 this.setVisible(false);
+    	    pMenuPrincipal menuPrincipal = new pMenuPrincipal();
+    	    menuPrincipal.setVisible(true);
+		
+	}
+
+	private void comprarCreditos() {
         // Obtener la cantidad de dinero, número de tarjeta, fecha y CCV
         try {
             double cantidadDinero = Double.parseDouble(dineroTextField.getText());
