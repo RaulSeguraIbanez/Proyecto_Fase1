@@ -32,11 +32,10 @@ public class pCreditos extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
-       // gbc.gridwidth = 0;
         fotoLabel = new JLabel(new ImageIcon("src/imagenes/FotoPerfil.png")); // Reemplaza con la ruta correcta de tu imagen
         panelCentral.add(fotoLabel, gbc);
       
-        gbc.insets = new Insets(10, 10, 10, 10);
+       // gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;
         panelCentral.add(new JLabel("Cantidad de Dinero:"), gbc);
