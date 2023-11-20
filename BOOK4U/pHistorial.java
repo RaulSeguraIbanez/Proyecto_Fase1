@@ -142,14 +142,6 @@ public class pHistorial extends JPanel {
         add(boton, constraints);
     }
 
-  /*  public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    } */
-
     public static void createAndShowGUI() {
         JFrame frame = new JFrame("BOOK4U");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
