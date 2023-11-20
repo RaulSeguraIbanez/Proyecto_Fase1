@@ -2,6 +2,8 @@ package BOOK4U;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +16,8 @@ public class pPerfil extends JFrame {
     private JButton cambiarTelefonoButton, cambiarEmailButton, cambiarNombreButton, cambiarCreditosButton;
     private JLabel fotoPerfilImageLabel;
     private JButton perfilButton;
-
+    private JButton fotoPerfilButton;
+    
     private static final String USER = "23_24_DAM2_EHHMMM";
     private static final String PWD = "ehhmmm_123";
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
@@ -61,26 +64,40 @@ public class pPerfil extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        fotoPerfilButton = new JButton("Ver Fotos de Perfil");
+        fotoPerfilButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirVentanaFotoPerfil();
+                dispose();
+            }
+        });
+
+        
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
         // Agregar componentes al panel
-        panel.add(dniLabel);
-        panel.add(new JLabel(pFunciones.dniUsuario)); // Mostrar el DNI directamente
-        panel.add(telefonoLabel);
-        panel.add(telefonoTextField);
-        panel.add(cambiarTelefonoButton);
-        panel.add(emailLabel);
-        panel.add(emailTextField);
-        panel.add(cambiarEmailButton);
-        panel.add(nombreLabel);
-        panel.add(nombreTextField);
-        panel.add(cambiarNombreButton);
-        panel.add(creditosLabel);
-        panel.add(creditosTextField);
-        panel.add(cambiarCreditosButton);
+        panel1.add(dniLabel);
+        panel1.add(new JLabel(pFunciones.dniUsuario)); // Mostrar el DNI directamente
+        panel1.add(telefonoLabel);
+        panel1.add(telefonoTextField);
+        panel1.add(cambiarTelefonoButton);
+        panel1.add(emailLabel);
+        panel1.add(emailTextField);
+        panel1.add(cambiarEmailButton);
+        panel1.add(nombreLabel);
+        panel1.add(nombreTextField);
+        panel1.add(cambiarNombreButton);
+        panel1.add(creditosLabel);
+        panel1.add(creditosTextField);
+        panel1.add(cambiarCreditosButton);
+        panel1.add(fotoPerfilButton);
+
        
     
 
         // Agregar panel al JFrame
-        add(panel);
+        add(panel1);
 
         // Cargar el perfil al inicio
         cargarPerfil();
@@ -92,7 +109,10 @@ public class pPerfil extends JFrame {
         // No se solicitará el DNI al usuario al abrir el perfil
         cargarPerfil();
     }
-
+    private void abrirVentanaFotoPerfil() {
+        // Crear una instancia de la ventana con las fotos de perfil
+        SwingUtilities.invokeLater(fotosperfil::new);
+    }
     private void cargarPerfil() {
         try {
             // Establecer conexión

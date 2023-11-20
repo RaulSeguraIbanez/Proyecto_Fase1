@@ -39,10 +39,10 @@ public class pMenuPrincipal extends JFrame {
         add(createToolBar(), BorderLayout.NORTH);
 
         // Panel central con la imagen
-        JPanel panelCentral = new JPanel();
-        ImageIcon imagen = new ImageIcon("src/imagenes/LogoBOOK4U.png");
-        JLabel labelImagen = new JLabel(imagen);
-        panelCentral.add(labelImagen);
+	        JPanel panelCentral = new JPanel();
+	        ImageIcon imagen = new ImageIcon("src/imagenes/LogoBOOK4U.png");
+	        JLabel labelImagen = new JLabel(imagen);
+	        panelCentral.add(labelImagen);
 
         add(panelCentral, BorderLayout.CENTER);
     }
@@ -66,7 +66,6 @@ public class pMenuPrincipal extends JFrame {
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
-//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 // Opcionalmente, podemos ocultar o cerrar el JFrame actual
                 dispose(); // Para cerrar
             }
@@ -107,7 +106,7 @@ public class pMenuPrincipal extends JFrame {
 
         // Creamos un JButton con un ImageIcon para el botón de perfil
         JButton perfilButton = new JButton();
-        ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png"); // Puedes cambiar la ruta de la imagen según tu preferencia
+        ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario); // Puedes cambiar la ruta de la imagen según tu preferencia
         perfilButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

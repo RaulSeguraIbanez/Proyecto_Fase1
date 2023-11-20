@@ -88,7 +88,7 @@ public class pListaParaReserva extends JFrame {
         toolBar.add(paginaCreditos);
 
         JButton perfilButton = new JButton();
-        ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
+        ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
         Image image = icon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);
         perfilButton.setIcon(icon);

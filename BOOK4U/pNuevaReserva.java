@@ -77,7 +77,7 @@ public class pNuevaReserva {
         toolBar.add(nuevasReservasButton);
 
         JButton perfilButton = new JButton();
-        ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
+        ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
         Image image = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);
         perfilButton.setIcon(icon);
