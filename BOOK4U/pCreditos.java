@@ -12,7 +12,7 @@ public class pCreditos extends JFrame {
     private JTextField dineroTextField;
     private JTextField tarjetaTextField;
     private JTextField fechaTextField;
-    private JTextField ccvTextField;
+    private JTextField ccvTextField ;
     private JLabel creditosLabel;
     private JLabel imagenUsuarioLabel;
 
@@ -97,7 +97,7 @@ public class pCreditos extends JFrame {
 		
 	}
 
-	private void comprarCreditos() {
+    private void comprarCreditos() {
         // Obtener la cantidad de dinero, número de tarjeta, fecha y CCV
         try {
             double cantidadDinero = Double.parseDouble(dineroTextField.getText());
@@ -105,7 +105,13 @@ public class pCreditos extends JFrame {
             String fecha = fechaTextField.getText();
             String ccv = ccvTextField.getText();
 
-            // Realizar la compra y actualizar los créditos y la fecha de compra
+          
+            if (!isValidCreditCard(numeroTarjeta) && !isValidExpirationDate(fecha) && !isValidCCV(ccv)) {
+                JOptionPane.showMessageDialog(this, "Error: Datos de tarjeta de crédito no válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
             double nuevosCreditos = cantidadDinero / 10;
             saldo += nuevosCreditos;
             fechaCompra = obtenerFechaActual();
@@ -125,7 +131,61 @@ public class pCreditos extends JFrame {
         }
     }
 
+    private boolean isValidExpirationDate(String expirationDate) {
+        // La fecha de expiración debe tener el formato MM/YY
+        // donde MM es el mes (01-12) y YY es el año (actual o futuro)
+        if (expirationDate.matches("\\d{2}/\\d{2}")) {
+            // Obtener el mes y el año de la fecha de expiración
+            int month = Integer.parseInt(expirationDate.substring(0, 2));
+            int year = Integer.parseInt(expirationDate.substring(3));
+
+            // Validar que el mes esté en el rango válido (01-12) y el año sea actual o futuro
+            return (month >= 1 && month <= 12) && (year >= getCurrentYear());
+        }
+
+        return false;
+    }
+
+    private int getCurrentYear() {
+        // Obtiene el año actual del sistema utilizando la clase Calendar
+        // Nota: Calendar.MONTH devuelve valores de 0 a 11, por lo que se suma 1 para obtener el mes actual
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        return calendar.get(java.util.Calendar.YEAR);
+    }
+
+
+	private boolean isValidCCV(String ccv) {
+     
+        return ccv.matches("\\d{3}");
+    }
+	
+    private boolean isValidCreditCard(String creditCardNumber) {
+        creditCardNumber = creditCardNumber.replaceAll("\\16", "");
+        if (creditCardNumber.length() != 16) {
+            
+        	 
+        	return false;
+        	    }
+
+        int sum = 0;
+        boolean alternate = false;
+        for (int i = creditCardNumber.length() - 1; i >= 0; i--) {
+            int digit = Character.getNumericValue(creditCardNumber.charAt(i));
+
+            if (alternate) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+            sum += digit;
+            alternate = !alternate;
+        }
+        return (sum % 10 == 0);
+    }
+
     private String obtenerFechaActual() {
+    	
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date fechaActual = new Date();
         return formatoFecha.format(fechaActual);
