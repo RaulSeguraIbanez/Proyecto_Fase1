@@ -77,7 +77,7 @@ public class CalculoDias {
 
     private static boolean verificarCreditosSuficientes(String dniUsuario, int precioTotal) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-            String query = "SELECT CREDITOS FROM USUARIOS WHERE DNI = ?";
+            String query = "SELECT CREDITOS FROM USUARIO WHERE DNI = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, dniUsuario);
                 ResultSet resultSet = statement.executeQuery();
@@ -94,7 +94,7 @@ public class CalculoDias {
 
     private static void restarCreditosUsuario(String dniUsuario, int precioTotal) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-            String query = "UPDATE USUARIOS SET CREDITOS = CREDITOS - ? WHERE DNI = ?";
+            String query = "UPDATE USUARIO SET CREDITOS = CREDITOS - ? WHERE DNI = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, precioTotal);
                 statement.setString(2, dniUsuario);
