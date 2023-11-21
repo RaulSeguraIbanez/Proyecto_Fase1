@@ -65,14 +65,14 @@ public class pHistorial extends JFrame {
             dispose();
            
         });
-        JButton paginaCreditos = new JButton("Créditos");
+        JButton misReservas = new JButton("Mis Reservas");
 
         // Añadimos un ActionListener al botón
-        paginaCreditos.addActionListener(new ActionListener() {
+        misReservas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creamos una instancia de la clase pPrincipal
-                SwingUtilities.invokeLater(pCreditos::new);
+                SwingUtilities.invokeLater(pMisReservas::new);
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
@@ -87,7 +87,7 @@ public class pHistorial extends JFrame {
 
         toolBar.add(paginaPrincipalButton);
         toolBar.add(nuevasReservasButton);
-        toolBar.add(paginaCreditos);
+        toolBar.add(misReservas);
 
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);

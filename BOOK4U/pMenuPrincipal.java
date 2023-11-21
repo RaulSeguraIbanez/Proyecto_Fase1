@@ -55,14 +55,14 @@ public class pMenuPrincipal extends JFrame {
         // Añadimos un Dimension al JToolBar para hacerlo más alto
         toolBar.setPreferredSize(new Dimension(800, 64));
 
-        JButton paginaPrincipalButton = new JButton("Créditos");
+        JButton historial = new JButton("Historial");
 
         // Añadimos un ActionListener al botón
-        paginaPrincipalButton.addActionListener(new ActionListener() {
+        historial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creamos una instancia de la clase pPrincipal
-            	SwingUtilities.invokeLater(pCreditos::new);
+            	SwingUtilities.invokeLater(pHistorial::new);
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
@@ -102,7 +102,7 @@ public class pMenuPrincipal extends JFrame {
 
         toolBar.add(nuevasReservasButton);
         toolBar.add(misReservasButton);
-        toolBar.add(paginaPrincipalButton);
+        toolBar.add(historial);
 
         // Creamos un JButton con un ImageIcon para el botón de perfil
         JButton perfilButton = new JButton();
