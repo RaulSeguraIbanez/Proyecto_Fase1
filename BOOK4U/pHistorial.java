@@ -4,160 +4,231 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class pHistorial extends JPanel {
-
-    private JTextField dniField;
-    private JTextField telefonoField;
-    private JTextField correoField;
-    private JTextField usuarioField;
-    private JPasswordField contrasenaField;
-    private JPasswordField repetirContrasenaField;
+public class pHistorial extends JFrame {
+	private static final String USER = "23_24_DAM2_EHHMMM";
+    private static final String PWD = "ehhmmm_123";
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     public pHistorial() {
-        setLayout(new GridBagLayout());
-        setBackground(new Color(255, 210, 175)); // Cambiar el fondo a naranja clarito
+        setTitle("Mis Reservas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 800);
+        centrarEnPantalla();
+    }
 
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+    private void centrarEnPantalla() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
 
-        // Título similar al "código 2"
-        JLabel lblTitulo = new JLabel("REGISTRO");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 70));
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        add(lblTitulo, constraints);
+        int x = (screenSize.width - frameSize.width) / 2;
+        int y = (screenSize.height - frameSize.height) / 2;
 
-        // Configurar los JLabel con texto descriptivo
-        JLabel dniLabel = new JLabel("DNI:");
-        JLabel telefonoLabel = new JLabel("Teléfono:");
-        JLabel correoLabel = new JLabel("Correo:");
-        JLabel usuarioLabel = new JLabel("Usuario:");
-        JLabel contrasenaLabel = new JLabel("Contraseña:");
-        JLabel repetirContrasenaLabel = new JLabel("Repite Contraseña:");
+        setLocation(x, y);
+    
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(255, 210, 175));
 
-        dniField = new JTextField(20);
-        telefonoField = new JTextField(20);
-        correoField = new JTextField(20);
-        usuarioField = new JTextField(20);
-        contrasenaField = new JPasswordField(20);
-        repetirContrasenaField = new JPasswordField(20);
+        // Barra de herramientas
+        JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
+        toolBar.setPreferredSize(new Dimension(800, 70));
 
-        // Botón similar al "código 2"
-        constraints.gridx = 0;
-        constraints.gridy = 1; // Asegura que los componentes de entrada estén debajo del título
-        add(dniLabel, constraints);
+        JButton paginaPrincipalButton = new JButton("Página principal");
+        paginaPrincipalButton.addActionListener(e -> {
+            // Creamos una instancia de la clase pMenuPrincipal
+            pMenuPrincipal mp = new pMenuPrincipal();
 
-        constraints.gridx = 1;
-        add(dniField, constraints);
+            // Hacemos visible el JFrame de la clase pMenuPrincipal
+            mp.setVisible(true);
 
-        constraints.gridx = 0;
-        constraints.gridy++;
-        add(telefonoLabel, constraints);
+            // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+            setVisible(false); // Para ocultar
+            // dispose(); // Para cerrar
+        });
 
-        constraints.gridx = 1;
-        add(telefonoField, constraints);
+        JButton nuevasReservasButton = new JButton("Nuevas Reservas");
+        nuevasReservasButton.addActionListener(e -> {
+            // Creamos una instancia de la clase pMenuPrincipal
+            pListaParaReserva mp = new pListaParaReserva();
 
-        constraints.gridx = 0;
-        constraints.gridy++;
-        add(correoLabel, constraints);
+            // Hacemos visible el JFrame de la clase pMenuPrincipal
+            mp.setVisible(true);
 
-        constraints.gridx = 1;
-        add(correoField, constraints);
+            // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+            dispose();
+           
+        });
+        JButton paginaCreditos = new JButton("Créditos");
 
-        constraints.gridx = 0;
-        constraints.gridy++;
-        add(usuarioLabel, constraints);
-
-        constraints.gridx = 1;
-        add(usuarioField, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy++;
-        add(contrasenaLabel, constraints);
-
-        constraints.gridx = 1;
-        add(contrasenaField, constraints);
-        
-        constraints.gridx = 0;
-        constraints.gridy++;
-        add(repetirContrasenaLabel, constraints);
-
-        constraints.gridx = 1;
-        add(repetirContrasenaField, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy++;
-        constraints.gridwidth = 2;
-        JButton boton = new JButton("Registrarse");
-        boton.setFont(new Font("Arial", Font.BOLD, 20));
-        boton.setBackground(new Color(140, 150, 255));
-        boton.setForeground(Color.BLACK);
-        boton.addActionListener(new ActionListener() {
+        // Añadimos un ActionListener al botón
+        paginaCreditos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica del botón similar al "código 2" aquí
-                String dni = dniField.getText();
-                String telefono = telefonoField.getText();
-                String correo = correoField.getText();
-                String usuario = usuarioField.getText();
-                String contrasena = new String(contrasenaField.getPassword());
-                String comprobarContrasena = new String(repetirContrasenaField.getPassword());
+                // Creamos una instancia de la clase pPrincipal
+                SwingUtilities.invokeLater(pCreditos::new);
 
-                // Realiza la lógica de registro o validación aquí
-                // Por ejemplo, imprime los valores en la consola
-                System.out.println("DNI: " + dni);
-                System.out.println("Teléfono: " + telefono);
-                System.out.println("Correo: " + correo);
-                System.out.println("Usuario: " + usuario);
-                System.out.println("Contraseña: " + contrasena);
-                System.out.println("Repetir Contraseña: " + contrasena);
+                // Hacemos visible el JFrame de la clase pPrincipal
+
+                // Opcionalmente, podemos ocultar o cerrar el JFrame actual
+                dispose(); // Para cerrar
             }
-        });//que coño pasa
-        boton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String dni = dniField.getText();
-        String telefono = telefonoField.getText();
-        String correo = correoField.getText();
-        String usuario = usuarioField.getText();
-        String contrasena = new String(contrasenaField.getPassword());
-        String comprobarContrasena = new String(repetirContrasenaField.getPassword());
+        });
 
-        // Llama al método de registro y verifica si la inserción fue exitosa
-        if (pFunciones.registrarUsuario(dni, telefono, correo, usuario, contrasena) && comprobarContrasena.equals(contrasena)) {
-            JOptionPane.showMessageDialog(null, "Usuario registrado con éxito");
-            SwingUtilities.getWindowAncestor(pHistorial.this).dispose();
-            SwingUtilities.invokeLater(() -> {
-                pPrincipal frame = new pPrincipal();
-                frame.setVisible(true);
-            });
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
+        FlowLayout buttonLayout = new FlowLayout();
+        buttonLayout.setHgap(85);
+        toolBar.setLayout(buttonLayout);
+
+        toolBar.add(paginaPrincipalButton);
+        toolBar.add(nuevasReservasButton);
+        toolBar.add(paginaCreditos);
+
+        JButton perfilButton = new JButton();
+        ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
+        Image image = icon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(image);
+        perfilButton.setIcon(icon);
+
+        JPanel perfilPanel = new JPanel(new BorderLayout());
+        perfilPanel.add(perfilButton, BorderLayout.EAST);
+        toolBar.add(perfilPanel);
+
+        mainPanel.add(toolBar, BorderLayout.NORTH);
+
+        // Menú con información de estancias
+        JPanel menuPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // Cambia según tus necesidades
+
+        // Botón de Refresh
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> {
+            // Lógica para volver a cargar la información de la base de datos
+            refreshData(menuPanel);
+        });
+
+        // Agregar el botón Refresh en la parte inferior
+        mainPanel.add(refreshButton, BorderLayout.SOUTH);
+
+        // JScrollPane para permitir el desplazamiento
+        JScrollPane scrollPane = new JScrollPane(menuPanel);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(mainPanel);
+        setVisible(true);
+
+        // Inicializar los datos al abrir la ventana
+        refreshData(menuPanel);
+    }
+
+    public void refreshData(JPanel menuPanel) {
+        // Limpiar el panel antes de volver a cargar los datos
+        menuPanel.removeAll();
+
+        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = ? AND r.ID_ESTANCIA = e.ID_ESTANCIA  ORDER BY ID_ESTANCIA";
+
+        	// Crear el objeto PreparedStatement y asignar el valor del DNI al primer parámetro
+        	PreparedStatement statement = connection.prepareStatement(query);
+        	statement.setString(1, pFunciones.dniUsuario);
+
+        	// Ejecutar la consulta y obtener el resultado
+        	ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("ID_ESTANCIA");
+                    String nombre = resultSet.getString("NOMBRE");
+                    String descripcion = resultSet.getString("DESCRIPCION");
+                    String direccion = resultSet.getString("DIRECCION");
+                    String coste = resultSet.getString("CREDITOS");
+                    Date fechaInicio = resultSet.getDate("FECHAINICIO");
+                    Date fechaFin = resultSet.getDate("FECHAFIN");
+                    String fotoUrl = resultSet.getString("FOTO");
+                    
+
+                    // Crear un panel para cada estancia que contendrá la foto y la información
+                    JPanel estanciaPanel = new JPanel(new BorderLayout());
+
+                    // Crear un botón para la imagen de la estancia
+                    JButton estanciaButton = new JButton();
+                    // Configurar el botón para mostrar la foto
+                    try {
+                        ImageIcon fotoIcon = new ImageIcon(fotoUrl);
+                        Image image1 = fotoIcon.getImage().getScaledInstance(140, 170, Image.SCALE_SMOOTH);
+                        estanciaButton.setIcon(new ImageIcon(image1));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    // Establecer el aspecto del botón para que no se vea como un botón
+                    estanciaButton.setBorderPainted(false);
+                    estanciaButton.setFocusPainted(false);
+                    estanciaButton.setContentAreaFilled(false);
+
+                    // Configurar el botón para mostrar la información de la estancia
+                    estanciaButton.setToolTipText("<html><b>ID:</b> " + id +
+                            "<br><b>Nombre:</b> " + nombre +
+                            "<br><b>Dirección:</b> " + direccion +
+                            "<br><Fecha Inicio:</b>" + fechaInicio +
+                            "<br><Fecha Fin:</b>" + fechaFin +
+                            "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
+
+                    // Agregar un ActionListener para manejar el clic en el botón
+                 /*   estanciaButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Aquí puedes agregar la lógica para abrir la pantalla NuevaReserva con la información correspondiente
+                            abrirNuevaReserva(id);
+                        }
+                    }); */ 
+
+                    // Crear un panel para el texto de la estancia
+                    JPanel textoPanel = new JPanel(new BorderLayout());
+                    // Crear un JLabel para el texto
+                    JLabel textoLabel = new JLabel("<html><b>ID:</b> " + id +
+                    		"<br><b>Nombre:</b> " + nombre +
+                            "<br><b>Dirección:</b> " + direccion +
+                            "<br><Fecha Inicio:</b>" + fechaInicio +
+                            "<br><Fecha Fin:</b>" + fechaFin +
+                            "<br><b>Coste:</b> " + coste + " Creditos" + "</html>");
+                    // Alinear el texto al centro
+                    textoLabel.setHorizontalAlignment(JLabel.CENTER);
+                    // Agregar el texto al panel
+                    textoPanel.add(textoLabel, BorderLayout.CENTER);
+
+                    // Agregar el botón y el texto al panel de la estancia
+                    estanciaPanel.add(estanciaButton, BorderLayout.CENTER);
+                    estanciaPanel.add(textoPanel, BorderLayout.SOUTH);
+
+                    // Agregar el panel de la estancia al panel principal
+                    menuPanel.add(estanciaPanel);
+
+                    System.out.println(id + " " + nombre + " " + direccion + " " + fechaInicio + " " + fechaFin + " " + coste + " " + fotoUrl);
+                }
+
+                // Actualizar la vista
+                menuPanel.revalidate();
+                menuPanel.repaint();
+            }
+         catch (SQLException e) {
+            e.printStackTrace();
         }
-    }
-});
-        add(boton, constraints);
-    }
-
-    public static void createAndShowGUI() {
-        JFrame frame = new JFrame("BOOK4U");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pRegistro registroPanel = new pRegistro();
-
-        // Configura el tamaño del JFrame y lo centra
-        frame.setPreferredSize(new Dimension(800, 700));
-        frame.getContentPane().add(registroPanel);
-        frame.pack();
-        frame.setLocationRelativeTo(null); // Centra la ventana en la pantalla
-        frame.setVisible(true);
-    }
 }
 
+    private void abrirNuevaReserva(int id) {
+        // Crear una instancia de NuevaReserva y pasar la id al constructor
+        pNuevaReserva nuevaReserva = new pNuevaReserva(id);
+        nuevaReserva.setVisible(true);
+        
+    }
 
-
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new pMisReservas());
+    }
+}
 
 
 

@@ -65,14 +65,14 @@ public class pMisReservas extends JFrame {
             dispose();
            
         });
-        JButton paginaCreditos = new JButton("Créditos");
+        JButton paginaCreditos = new JButton("Historial");
 
         // Añadimos un ActionListener al botón
         paginaCreditos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creamos una instancia de la clase pPrincipal
-                SwingUtilities.invokeLater(pCreditos::new);
+                SwingUtilities.invokeLater(pHistorial::new);
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
@@ -130,7 +130,7 @@ public class pMisReservas extends JFrame {
         menuPanel.removeAll();
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = ? AND r.ID_ESTANCIA = e.ID_ESTANCIA  ORDER BY ID_ESTANCIA";
+        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = ? AND r.ID_ESTANCIA = e.ID_ESTANCIA AND SYSDATE BETWEEN r.FECHAINICIO AND r.FECHAFIN ORDER BY ID_ESTANCIA";
 
         	// Crear el objeto PreparedStatement y asignar el valor del DNI al primer parámetro
         	PreparedStatement statement = connection.prepareStatement(query);
