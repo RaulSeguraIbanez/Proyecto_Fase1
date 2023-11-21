@@ -63,7 +63,7 @@ public class pListaParaReserva extends JFrame {
                 // Cierra el JFrame actual
                             }
         });
-        JButton paginaCreditos = new JButton("Créditos");
+        JButton paginaCreditos = new JButton("Historial");
 
         // Añadimos un ActionListener al botón
         paginaCreditos.addActionListener(new ActionListener() {

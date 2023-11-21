@@ -181,13 +181,21 @@ public class pNuevaReserva {
                 // Realizar el cálculo de la reserva usando la nueva clase CalculadoraReserva
                 String resultadoReserva = CalculoDias.calcularReserva(fechaInicio, fechaFin, precioPorDia, estanciaId);
 
-                // Muestra los resultados en una nueva ventana de JOptionPane
-                JOptionPane.showMessageDialog(frame, resultadoReserva, "Reserva Calculada", JOptionPane.INFORMATION_MESSAGE);
+                // Muestra los resultados en una nueva ventana de JOptionPane con botón de aceptar/cancelar
+                int option = JOptionPane.showConfirmDialog(frame, resultadoReserva, "Reserva Calculada", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
-                // Cierra la ventana pequeña
-                frame.dispose();
+                // Verifica si se ha presionado el botón "Aceptar"
+                if (option == JOptionPane.OK_OPTION) {
+                    // Realiza el insert después de darle aceptar
+                    CalculoDias.realizarReserva(fechaInicio, fechaFin, precioPorDia, estanciaId);
+
+                    // Cierra la ventana pequeña
+                    frame.dispose();
+                }
             }
         });
+
+
         JLabel precioLabel = new JLabel("Precio por día: " + precioPorDia + " créditos");
         precioLabel.setFont(labelFont);
         precioLabel.setFont(new Font("Sans-serif", Font.PLAIN, 25));

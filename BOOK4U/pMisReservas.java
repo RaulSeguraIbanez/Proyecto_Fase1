@@ -65,14 +65,14 @@ public class pMisReservas extends JFrame {
             dispose();
            
         });
-        JButton paginaCreditos = new JButton("Créditos");
+        JButton historial = new JButton("Historial");
 
         // Añadimos un ActionListener al botón
-        paginaCreditos.addActionListener(new ActionListener() {
+        historial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creamos una instancia de la clase pPrincipal
-                SwingUtilities.invokeLater(pCreditos::new);
+                SwingUtilities.invokeLater(pHistorial::new);
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
@@ -87,10 +87,17 @@ public class pMisReservas extends JFrame {
 
         toolBar.add(paginaPrincipalButton);
         toolBar.add(nuevasReservasButton);
-        toolBar.add(paginaCreditos);
+        toolBar.add(historial);
 
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
+        perfilButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abrir la ventana del perfil con un DNI específico
+                SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
+            }
+        });
         Image image = icon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);
         perfilButton.setIcon(icon);
@@ -130,7 +137,7 @@ public class pMisReservas extends JFrame {
         menuPanel.removeAll();
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = ? AND r.ID_ESTANCIA = e.ID_ESTANCIA  ORDER BY ID_ESTANCIA";
+        	String query = "SELECT r.ID_ESTANCIA, e.NOMBRE, e.DESCRIPCION, e.DIRECCION, r.CREDITOS, r.DNI, r.FECHAINICIO, r.FECHAFIN, e.FOTO FROM RESERVAS r, ESTANCIA e WHERE DNI = ? AND r.ID_ESTANCIA = e.ID_ESTANCIA AND SYSDATE < r.FECHAFIN ORDER BY ID_ESTANCIA";
 
         	// Crear el objeto PreparedStatement y asignar el valor del DNI al primer parámetro
         	PreparedStatement statement = connection.prepareStatement(query);
@@ -169,7 +176,7 @@ public class pMisReservas extends JFrame {
                     estanciaButton.setContentAreaFilled(false);
 
                     // Configurar el botón para mostrar la información de la estancia
-                    estanciaButton.setToolTipText("<html><b>ID:</b> " + id +
+                    estanciaButton.setToolTipText("<html><b></b> " +
                             "<br><b>Nombre:</b> " + nombre +
                             "<br><b>Dirección:</b> " + direccion +
                             "<br><Fecha Inicio:</b>" + fechaInicio +
@@ -188,7 +195,7 @@ public class pMisReservas extends JFrame {
                     // Crear un panel para el texto de la estancia
                     JPanel textoPanel = new JPanel(new BorderLayout());
                     // Crear un JLabel para el texto
-                    JLabel textoLabel = new JLabel("<html><b>ID:</b> " + id +
+                    JLabel textoLabel = new JLabel("<html><b></b> " +
                     		"<br><b>Nombre:</b> " + nombre +
                             "<br><b>Dirección:</b> " + direccion +
                             "<br><Fecha Inicio:</b>" + fechaInicio +
