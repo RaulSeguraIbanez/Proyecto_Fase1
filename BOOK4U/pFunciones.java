@@ -13,7 +13,7 @@ import java.sql.Statement;
 			 public static String nombreUsuario = "";
 			    public static String emailUsuario = "";
 			    public static String passwordUsuario = "";
-			    public static String fotoUsuario = fotosperfil.rutaImagen;
+			    public static String fotoUsuario = "";
 			    public static int creditosUsuario = 0;
 			    public static String dniUsuario = ""; // Agregar esta línea
 			    public static String telefonoUsuario = ""; // Agregar esta línea

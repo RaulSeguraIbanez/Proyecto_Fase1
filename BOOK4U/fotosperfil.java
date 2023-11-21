@@ -109,6 +109,7 @@ public class fotosperfil extends JFrame {
             // Cerrar recursos
             preparedStatement.close();
             connection.close();
+            pFunciones.fotoUsuario = rutaImagen;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
