@@ -91,6 +91,13 @@ public class pMisReservas extends JFrame {
 
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
+        perfilButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abrir la ventana del perfil con un DNI específico
+                SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
+            }
+        });
         Image image = icon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
         icon = new ImageIcon(image);
         perfilButton.setIcon(icon);
