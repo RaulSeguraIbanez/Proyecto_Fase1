@@ -11,6 +11,7 @@ public class fotosperfil extends JFrame {
     private static final String USER = "23_24_DAM2_EHHMMM";
     private static final String PWD = "ehhmmm_123";
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
+	public static String rutaImagen;
 
     private JPanel buttonPanel;
     private String rutaImagenSeleccionada; // Nueva variable para almacenar la ruta de la imagen seleccionada
@@ -31,9 +32,8 @@ public class fotosperfil extends JFrame {
         // Configurar el diseño del panel de botones
         buttonPanel = new JPanel(new GridLayout(3, 3, 10, 10));
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
-
         // Crear los botones con imágenes
-        JButton button1 = createButton("src/imagenes/perfil1.png");
+        JButton button1 = createButton("src/imagenes/FotoPerfil.png");
         JButton button2 = createButton("src/imagenes/perfil2.png");
         JButton button3 = createButton("src/imagenes/perfil3.png");
         JButton button4 = createButton("src/imagenes/perfil4.jpeg");
@@ -42,6 +42,9 @@ public class fotosperfil extends JFrame {
         JButton button7 = createButton("src/imagenes/perfil7.jpg");
         JButton button8 = createButton("src/imagenes/perfil8.jpg");
         JButton button9 = createButton("src/imagenes/perfil9.jpeg");
+
+        
+        setLocationRelativeTo(null);
 
         // Hacer visible el JFrame
         setVisible(true);
@@ -148,7 +151,7 @@ public class fotosperfil extends JFrame {
         toolBar.add(paginaPrincipalButton);
 
         JButton perfilButton = new JButton();
-        ImageIcon icon = new ImageIcon("src/imagenes/FotoPerfil.png");
+        ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
         icon = new ImageIcon(redimensionarImagen(icon.getImage(), 60, 60));
         perfilButton.setIcon(icon);
         perfilButton.addActionListener(new ActionListener() {
@@ -159,7 +162,15 @@ public class fotosperfil extends JFrame {
         });
 
         toolBar.add(perfilButton);
-
+        int hgap = 100; // ajusta el valor según tus necesidades
+        toolBar.setBorder(BorderFactory.createEmptyBorder(1, hgap, 1, hgap));
+        toolBar.add(nuevasReservasButton);
+        toolBar.addSeparator(new Dimension(80, 20)); // Agregar espacio horizontal entre botones
+        toolBar.add(misReservasButton);
+        toolBar.addSeparator(new Dimension(80, 20)); // Agregar espacio horizontal entre botones
+        toolBar.add(paginaPrincipalButton);
+        toolBar.addSeparator(new Dimension(150, 20)); // Agregar espacio horizontal entre botones
+        toolBar.add(perfilButton);
         return toolBar;
     }
 
@@ -169,6 +180,7 @@ public class fotosperfil extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(fotosperfil::new);
+	        
     }
 }
 

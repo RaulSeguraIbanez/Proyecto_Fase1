@@ -211,6 +211,7 @@ public class pPerfil extends JFrame {
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
+        
     }
 }
 
