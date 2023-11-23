@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 
 public class pPerfil extends JFrame {
@@ -17,7 +14,7 @@ public class pPerfil extends JFrame {
     private JLabel fotoPerfilImageLabel;
     private JButton perfilButton;
     private JButton fotoPerfilButton;
-    
+
     private static final String USER = "23_24_DAM2_EHHMMM";
     private static final String PWD = "ehhmmm_123";
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
@@ -53,7 +50,13 @@ public class pPerfil extends JFrame {
         cambiarTelefonoButton.addActionListener(e -> cambiarCampo("TELEFONO", telefonoTextField.getText()));
         cambiarEmailButton.addActionListener(e -> cambiarCampo("EMAIL", emailTextField.getText()));
         cambiarNombreButton.addActionListener(e -> cambiarCampo("NOMBRE", nombreTextField.getText()));
-        cambiarCreditosButton.addActionListener(e -> cambiarCampo("CREDITOS", creditosTextField.getText()));
+        cambiarCreditosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirVentanaCreditos();
+                dispose();
+            }
+        });
 
         fotoPerfilImageLabel = new JLabel();
 
@@ -73,7 +76,6 @@ public class pPerfil extends JFrame {
             }
         });
 
-        
         JPanel panel1 = new JPanel();
         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
         // Agregar componentes al panel
@@ -88,13 +90,8 @@ public class pPerfil extends JFrame {
         panel1.add(nombreLabel);
         panel1.add(nombreTextField);
         panel1.add(cambiarNombreButton);
-        panel1.add(creditosLabel);
-        panel1.add(creditosTextField);
         panel1.add(cambiarCreditosButton);
         panel1.add(fotoPerfilButton);
-
-       
-    
 
         // Agregar panel al JFrame
         add(panel1);
@@ -109,10 +106,14 @@ public class pPerfil extends JFrame {
         // No se solicitará el DNI al usuario al abrir el perfil
         cargarPerfil();
     }
+    private void abrirVentanaCreditos() {
+        SwingUtilities.invokeLater(pCreditos::new);
+    }
     private void abrirVentanaFotoPerfil() {
         // Crear una instancia de la ventana con las fotos de perfil
         SwingUtilities.invokeLater(fotosperfil::new);
     }
+
     private void cargarPerfil() {
         try {
             // Establecer conexión
@@ -133,7 +134,6 @@ public class pPerfil extends JFrame {
                 String email = resultSet.getString("EMAIL");
                 String nombre = resultSet.getString("NOMBRE");
                 int creditos = resultSet.getInt("CREDITOS");
-                // En el caso de la imagen de perfil, puede ser más complicado y requerir un tratamiento especial.
 
                 // Actualizar campos en la interfaz gráfica
                 telefonoTextField.setText(telefono);
@@ -200,7 +200,6 @@ public class pPerfil extends JFrame {
         fotoPerfilImageLabel.setIcon(imageIcon);
     }
 
-
     private void limpiarCampos() {
         telefonoTextField.setText("");
         emailTextField.setText("");
@@ -208,12 +207,10 @@ public class pPerfil extends JFrame {
         creditosTextField.setText("");
         fotoPerfilImageLabel.setIcon(null);
     }
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
-        
     }
 }
-
 
 
