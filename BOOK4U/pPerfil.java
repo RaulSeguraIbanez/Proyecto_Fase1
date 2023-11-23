@@ -26,7 +26,7 @@ public class pPerfil extends JFrame {
 
         setTitle("Perfil de Usuario");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 800);
+        setSize(400, 300);
         setLocationRelativeTo(null);
 
         // Crear componentes
@@ -76,8 +76,8 @@ public class pPerfil extends JFrame {
             }
         });
 
-       
-        JPanel panel1 = new JPanel(new GridLayout(8, 2, 10, 10));
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
         // Agregar componentes al panel
         panel1.add(dniLabel);
         panel1.add(new JLabel(pFunciones.dniUsuario)); // Mostrar el DNI directamente
@@ -199,7 +199,21 @@ public class pPerfil extends JFrame {
         // Mostrar la imagen en el JLabel
         fotoPerfilImageLabel.setIcon(imageIcon);
     }
+    
+    private Component crearEtiquetaYCampo(JLabel etiqueta, JComponent campo, JButton boton) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(etiqueta);
+        panel.add(Box.createRigidArea(new Dimension(10, 0))); // Espacio horizontal
+        panel.add(campo);
+        panel.add(Box.createRigidArea(new Dimension(10, 0))); // Espacio horizontal
+        panel.add(boton);
+        return panel;
+    }
 
+    private Component crearEspaciadoVertical() {
+        return Box.createRigidArea(new Dimension(0, 10)); // Espacio vertical
+    }
     private void limpiarCampos() {
         telefonoTextField.setText("");
         emailTextField.setText("");
