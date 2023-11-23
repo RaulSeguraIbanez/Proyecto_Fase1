@@ -4,10 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class pCreditos extends JFrame {
+	
+	private static final String USER = "23_24_DAM2_EHHMMM";
+	private static final String PWD = "ehhmmm_123";
+	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe"; 
+	
+	 public static int creditosUsuario = 0;
 
     private JTextField dineroTextField;
     private JTextField tarjetaTextField;
@@ -20,13 +31,14 @@ public class pCreditos extends JFrame {
     private String fechaCompra = "";
 
     public pCreditos() {
-        // Configurar la ventana
+       
         setTitle("Compra de Créditos");
         setSize(800, 600);
+        setBackground(new Color(255, 210, 175));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        // Crear componentes
+        
+       
         JPanel formularioPanel = new JPanel();
         formularioPanel.setLayout(new BoxLayout(formularioPanel, BoxLayout.Y_AXIS));
 
@@ -190,6 +202,56 @@ public class pCreditos extends JFrame {
         Date fechaActual = new Date();
         return formatoFecha.format(fechaActual);
     }
+    
+    private boolean guardarEnBaseDeDatos(double cantidadDinero, String fechaCompra) {
+        try {
+            // Establecer la conexión con la base de datos
+            Connection connection = DriverManager.getConnection(URL, USER, PWD);
+
+            // Consulta para insertar datos en la tabla de transacciones (ajusta según tu esquema)
+            String sql = "INSERT INTO usuario (DNI, TELEFONO, EMAIL, NOMBRE, PASSWORD, CREDITOS, FOTOPERFIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, creditosUsuario);
+               
+                int filasAfectadas = statement.executeUpdate();
+                return filasAfectadas<1 ;
+            }
+
+        
+            // Cerrar la conexión
+          
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+    
+    public static boolean comprobarcreditos(int creditos) {
+	    try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+	        String query = "SELECT * FROM usuario WHERE creditos = ? ";
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setInt(1, creditos);
+	       
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	        	
+	        	pFunciones.creditosUsuario = resultSet.getInt("CREDITOS");
+	        	
+	            
+	            System.out.println("Inicio de sesión exitoso para el usuario: " + creditosUsuario);
+	            
+	            return true; // Usuario y contraseña coinciden
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false; // Usuario y contraseña no coinciden
+	}
+	
+	
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
