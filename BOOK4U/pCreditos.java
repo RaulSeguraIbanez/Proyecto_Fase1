@@ -229,9 +229,9 @@ public class pCreditos extends JFrame {
     
     public static boolean comprobarcreditos(int creditos) {
 	    try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-	        String query = "SELECT * FROM usuario WHERE creditos = ? ";
+	        String query = "SELECT creditos FROM usuario WHERE dni = ? ";
 	        PreparedStatement statement = connection.prepareStatement(query);
-	        statement.setInt(1, creditos);
+	        statement.setString(1, pFunciones.dniUsuario);
 	       
 	        ResultSet resultSet = statement.executeQuery();
 
