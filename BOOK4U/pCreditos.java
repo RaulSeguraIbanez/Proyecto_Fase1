@@ -33,7 +33,7 @@ public class pCreditos extends JFrame {
     public pCreditos() {
        
         setTitle("Compra de Créditos");
-        setSize(800, 600);
+        setSize(800, 700);
         setBackground(new Color(255, 210, 175));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -74,7 +74,7 @@ public class pCreditos extends JFrame {
         formularioPanel.add(creditosLabel);
 
         // Agregar imagen de usuario
-        ImageIcon imagenUsuario = new ImageIcon(pFunciones.fotoUsuario); // Cambia "ruta_de_la_imagen.png" por la ruta real de la imagen
+        ImageIcon imagenUsuario = new ImageIcon("src\\imagenes\\FotoPerfil.png"); // Cambia "ruta_de_la_imagen.png" por la ruta real de la imagen
         imagenUsuarioLabel = new JLabel(imagenUsuario);
 
         // Alinear la imagen al centro y agregar borde
@@ -209,10 +209,11 @@ public class pCreditos extends JFrame {
             Connection connection = DriverManager.getConnection(URL, USER, PWD);
 
             // Consulta para insertar datos en la tabla de transacciones (ajusta según tu esquema)
-            String sql = "INSERT INTO usuario (DNI, TELEFONO, EMAIL, NOMBRE, PASSWORD, CREDITOS, FOTOPERFIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "UPDATE usuario CREDITOS VALUES ? WHERE dni = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, creditosUsuario);
-               
+                statement.setString(2, pFunciones.dniUsuario);
+                	
                 int filasAfectadas = statement.executeUpdate();
                 return filasAfectadas<1 ;
             }
