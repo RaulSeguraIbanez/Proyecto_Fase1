@@ -79,6 +79,13 @@ public class pNuevaReserva {
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
         Image image = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        perfilButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abrir la ventana del perfil con un DNI específico
+                SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
+            }
+        });
         icon = new ImageIcon(image);
         perfilButton.setIcon(icon);
 
