@@ -70,7 +70,7 @@ public class pListaParaReserva extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creamos una instancia de la clase pPrincipal
-                SwingUtilities.invokeLater(pCreditos::new);
+            	SwingUtilities.invokeLater(pHistorial::new);
 
                 // Hacemos visible el JFrame de la clase pPrincipal
 
