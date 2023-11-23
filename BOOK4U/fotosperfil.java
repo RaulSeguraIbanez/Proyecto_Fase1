@@ -159,6 +159,7 @@ public class fotosperfil extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
+                dispose();
             }
         });
 

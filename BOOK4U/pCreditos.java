@@ -74,7 +74,7 @@ public class pCreditos extends JFrame {
         formularioPanel.add(creditosLabel);
 
         // Agregar imagen de usuario
-        ImageIcon imagenUsuario = new ImageIcon("src/imagenes/FotoPerfil.png"); // Cambia "ruta_de_la_imagen.png" por la ruta real de la imagen
+        ImageIcon imagenUsuario = new ImageIcon(pFunciones.fotoUsuario); // Cambia "ruta_de_la_imagen.png" por la ruta real de la imagen
         imagenUsuarioLabel = new JLabel(imagenUsuario);
 
         // Alinear la imagen al centro y agregar borde

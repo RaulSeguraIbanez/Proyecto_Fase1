@@ -16,7 +16,7 @@ public class pListaParaReserva extends JFrame {
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     public pListaParaReserva() {
-        setTitle("Ventana Principal");
+        setTitle("Para Reservar");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
         centrarEnPantalla();
@@ -90,6 +90,13 @@ public class pListaParaReserva extends JFrame {
         JButton perfilButton = new JButton();
         ImageIcon icon = new ImageIcon(pFunciones.fotoUsuario);
         Image image = icon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+        perfilButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abrir la ventana del perfil con un DNI específico
+                SwingUtilities.invokeLater(() -> new pPerfil("DNI_DEL_USUARIO"));
+            }
+        });
         icon = new ImageIcon(image);
         perfilButton.setIcon(icon);
 
