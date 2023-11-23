@@ -16,7 +16,7 @@ public class pListaParaReserva extends JFrame {
     private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     public pListaParaReserva() {
-        setTitle("Ventana Principal");
+        setTitle("Para Reservar");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
         centrarEnPantalla();
