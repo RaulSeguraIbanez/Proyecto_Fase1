@@ -26,7 +26,7 @@ public class pPerfil extends JFrame {
 
         setTitle("Perfil de Usuario");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 500);
+        setSize(800, 800);
         setLocationRelativeTo(null);
 
         // Crear componentes
@@ -76,8 +76,8 @@ public class pPerfil extends JFrame {
             }
         });
 
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+       
+        JPanel panel1 = new JPanel(new GridLayout(8, 2, 10, 10));
         // Agregar componentes al panel
         panel1.add(dniLabel);
         panel1.add(new JLabel(pFunciones.dniUsuario)); // Mostrar el DNI directamente
@@ -107,7 +107,7 @@ public class pPerfil extends JFrame {
         cargarPerfil();
     }
     private void abrirVentanaCreditos() {
-        SwingUtilities.invokeLater(pCreditos::new);
+        new pCreditos().setVisible(true);
     }
     private void abrirVentanaFotoPerfil() {
         // Crear una instancia de la ventana con las fotos de perfil
@@ -195,7 +195,7 @@ public class pPerfil extends JFrame {
     private void cargarImagenLocal(String ruta) {
         // Cargar la imagen desde un camino local
         ImageIcon imageIcon = new ImageIcon(ruta);
-
+        
         // Mostrar la imagen en el JLabel
         fotoPerfilImageLabel.setIcon(imageIcon);
     }
