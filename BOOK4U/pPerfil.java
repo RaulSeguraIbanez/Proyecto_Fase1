@@ -26,7 +26,7 @@ public class pPerfil extends JFrame {
 
         setTitle("Perfil de Usuario");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 400);
         setLocationRelativeTo(null);
 
         // Crear componentes
