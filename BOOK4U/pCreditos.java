@@ -27,6 +27,9 @@ public class pCreditos extends JFrame {
     private int saldo = pFunciones.creditosUsuario;
     private String fechaCompra = "";
 
+    private static final int MAX_WIDTH = 400;  // Establece el ancho máximo deseado
+    private static final int MAX_HEIGHT = 400; // Establece la altura máxima deseada
+
     public pCreditos() {
 
         setTitle("Compra de Créditos");
@@ -69,13 +72,24 @@ public class pCreditos extends JFrame {
         formularioPanel.add(comprarButton);
         formularioPanel.add(creditosLabel);
 
-        ImageIcon imagenUsuario = new ImageIcon("src\\imagenes\\FotoPerfil.png");
+        // Obtén la imagen de perfil desde pFunciones.FotoPerfil
+        ImageIcon imagenUsuario = new ImageIcon(pFunciones.fotoUsuario);
+        Image imagenPerfil = imagenUsuario.getImage();
+
+        // Escala la imagen de perfil si excede los límites de tamaño
+        if (imagenPerfil.getWidth(null) > MAX_WIDTH || imagenPerfil.getHeight(null) > MAX_HEIGHT) {
+            imagenPerfil = imagenPerfil.getScaledInstance(MAX_WIDTH, MAX_HEIGHT, Image.SCALE_SMOOTH);
+        }
+
+        imagenUsuario = new ImageIcon(imagenPerfil);
         imagenUsuarioLabel = new JLabel(imagenUsuario);
 
+        // Alinear la imagen al centro y agregar borde
         JPanel imagenPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         imagenPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         imagenPanel.add(imagenUsuarioLabel);
 
+        // Añadir componentes a la ventana
         add(formularioPanel, BorderLayout.CENTER);
         add(imagenPanel, BorderLayout.NORTH);
 
@@ -103,8 +117,6 @@ public class pCreditos extends JFrame {
     private void comprarCreditos() {
         try {
             int cantidadDinero = Integer.parseInt(dineroTextField.getText());
-            System.out.println("Cantidad de dinero ingresada: " + cantidadDinero); // Agrega esta línea para depurar
-
             String numeroTarjeta = tarjetaTextField.getText();
             String fecha = fechaTextField.getText();
             String ccv = ccvTextField.getText();
@@ -114,9 +126,7 @@ public class pCreditos extends JFrame {
                 return;
             }
 
-            int nuevosCreditos = cantidadDinero;
-            System.out.println("Nuevos créditos calculados: " + nuevosCreditos); // Agrega esta línea para depurar
-
+            int nuevosCreditos = cantidadDinero / 10;
             pFunciones.creditosUsuario += nuevosCreditos;
             saldo = pFunciones.creditosUsuario;
             fechaCompra = obtenerFechaActual();
@@ -137,8 +147,6 @@ public class pCreditos extends JFrame {
             JOptionPane.showMessageDialog(this, "Error: Ingresa una cantidad de dinero válida.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-
 
     private boolean guardarEnBaseDeDatos(String dni, double creditos) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
