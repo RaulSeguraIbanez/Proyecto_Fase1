@@ -126,7 +126,7 @@ public class pCreditos extends JFrame {
                 return;
             }
 
-            int nuevosCreditos = cantidadDinero / 10;
+            int nuevosCreditos = cantidadDinero;
             pFunciones.creditosUsuario += nuevosCreditos;
             saldo = pFunciones.creditosUsuario;
             fechaCompra = obtenerFechaActual();
