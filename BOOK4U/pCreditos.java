@@ -7,38 +7,34 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class pCreditos extends JFrame {
-	
-	private static final String USER = "23_24_DAM2_EHHMMM";
-	private static final String PWD = "ehhmmm_123";
-	private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe"; 
-	
-	 public static int creditosUsuario = 0;
+
+    private static final String USER = "23_24_DAM2_EHHMMM";
+    private static final String PWD = "ehhmmm_123";
+    private static final String URL = "jdbc:oracle:thin:@192.168.3.26:1521:xe";
 
     private JTextField dineroTextField;
     private JTextField tarjetaTextField;
     private JTextField fechaTextField;
-    private JTextField ccvTextField ;
+    private JTextField ccvTextField;
     private JLabel creditosLabel;
     private JLabel imagenUsuarioLabel;
 
-    private double saldo = 0;
+    private int saldo = pFunciones.creditosUsuario;
     private String fechaCompra = "";
 
     public pCreditos() {
-       
+
         setTitle("Compra de Créditos");
         setSize(800, 700);
         setBackground(new Color(255, 210, 175));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-       
+
         JPanel formularioPanel = new JPanel();
         formularioPanel.setLayout(new BoxLayout(formularioPanel, BoxLayout.Y_AXIS));
 
@@ -55,11 +51,11 @@ public class pCreditos extends JFrame {
         ccvTextField = new JTextField(3);
 
         JButton comprarButton = new JButton("Comprar Créditos");
-        
+
         JButton menuPrincipalButton = new JButton("Menú Principal");
         formularioPanel.add(menuPrincipalButton);
 
-        creditosLabel = new JLabel("Créditos disponibles: " + saldo + " - Fecha de compra: " + fechaCompra);
+        creditosLabel = new JLabel("Créditos disponibles: " + pFunciones.creditosUsuario + " - Fecha de compra: " + fechaCompra);
         creditosLabel.setForeground(Color.blue);
 
         formularioPanel.add(dineroLabel);
@@ -73,27 +69,23 @@ public class pCreditos extends JFrame {
         formularioPanel.add(comprarButton);
         formularioPanel.add(creditosLabel);
 
-        // Agregar imagen de usuario
-        ImageIcon imagenUsuario = new ImageIcon("src\\imagenes\\FotoPerfil.png"); // Cambia "ruta_de_la_imagen.png" por la ruta real de la imagen
+        ImageIcon imagenUsuario = new ImageIcon("src\\imagenes\\FotoPerfil.png");
         imagenUsuarioLabel = new JLabel(imagenUsuario);
 
-        // Alinear la imagen al centro y agregar borde
         JPanel imagenPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         imagenPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         imagenPanel.add(imagenUsuarioLabel);
 
-        // Añadir componentes a la ventana
         add(formularioPanel, BorderLayout.CENTER);
         add(imagenPanel, BorderLayout.NORTH);
 
-        // Configurar el ActionListener para el botón de comprar
         comprarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 comprarCreditos();
             }
         });
-        
+
         menuPrincipalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -103,55 +95,73 @@ public class pCreditos extends JFrame {
     }
 
     protected void abrirMenuPrincipal() {
-    	 this.setVisible(false);
-    	    pMenuPrincipal menuPrincipal = new pMenuPrincipal();
-    	    menuPrincipal.setVisible(true);
-		
-	}
+        this.setVisible(false);
+        pMenuPrincipal menuPrincipal = new pMenuPrincipal();
+        menuPrincipal.setVisible(true);
+    }
 
     private void comprarCreditos() {
-        // Obtener la cantidad de dinero, número de tarjeta, fecha y CCV
         try {
-            double cantidadDinero = Double.parseDouble(dineroTextField.getText());
+            int cantidadDinero = Integer.parseInt(dineroTextField.getText());
+            System.out.println("Cantidad de dinero ingresada: " + cantidadDinero); // Agrega esta línea para depurar
+
             String numeroTarjeta = tarjetaTextField.getText();
             String fecha = fechaTextField.getText();
             String ccv = ccvTextField.getText();
 
-          
             if (!isValidCreditCard(numeroTarjeta) && !isValidExpirationDate(fecha) && !isValidCCV(ccv)) {
                 JOptionPane.showMessageDialog(this, "Error: Datos de tarjeta de crédito no válidos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            int nuevosCreditos = cantidadDinero;
+            System.out.println("Nuevos créditos calculados: " + nuevosCreditos); // Agrega esta línea para depurar
 
-            double nuevosCreditos = cantidadDinero / 10;
-            saldo += nuevosCreditos;
+            pFunciones.creditosUsuario += nuevosCreditos;
+            saldo = pFunciones.creditosUsuario;
             fechaCompra = obtenerFechaActual();
 
-            // Mostrar los créditos actualizados y la fecha de compra
             creditosLabel.setText("Créditos disponibles: " + saldo + " - Fecha de compra: " + fechaCompra);
 
-            // Limpiar los campos de entrada
             dineroTextField.setText("");
             tarjetaTextField.setText("");
             fechaTextField.setText("");
             ccvTextField.setText("");
 
-            JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos actualizados.");
+            if (guardarEnBaseDeDatos(pFunciones.dniUsuario, saldo)) {
+                JOptionPane.showMessageDialog(this, "Compra exitosa. Créditos actualizados.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al actualizar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Error: Ingresa una cantidad de dinero válida.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+
+
+    private boolean guardarEnBaseDeDatos(String dni, double creditos) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
+            String sql = "UPDATE usuario SET CREDITOS = ? WHERE dni = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setDouble(1, creditos);
+                statement.setString(2, dni);
+
+                int filasAfectadas = statement.executeUpdate();
+                return filasAfectadas > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al actualizar la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
     private boolean isValidExpirationDate(String expirationDate) {
-        // La fecha de expiración debe tener el formato MM/YY
-        // donde MM es el mes (01-12) y YY es el año (actual o futuro)
         if (expirationDate.matches("\\d{2}/\\d{2}")) {
-            // Obtener el mes y el año de la fecha de expiración
             int month = Integer.parseInt(expirationDate.substring(0, 2));
             int year = Integer.parseInt(expirationDate.substring(3));
 
-            // Validar que el mes esté en el rango válido (01-12) y el año sea actual o futuro
             return (month >= 1 && month <= 12) && (year >= getCurrentYear());
         }
 
@@ -159,25 +169,19 @@ public class pCreditos extends JFrame {
     }
 
     private int getCurrentYear() {
-        // Obtiene el año actual del sistema utilizando la clase Calendar
-        // Nota: Calendar.MONTH devuelve valores de 0 a 11, por lo que se suma 1 para obtener el mes actual
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         return calendar.get(java.util.Calendar.YEAR);
     }
 
-
-	private boolean isValidCCV(String ccv) {
-     
+    private boolean isValidCCV(String ccv) {
         return ccv.matches("\\d{3}");
     }
-	
+
     private boolean isValidCreditCard(String creditCardNumber) {
         creditCardNumber = creditCardNumber.replaceAll("\\16", "");
         if (creditCardNumber.length() != 16) {
-            
-        	 
-        	return false;
-        	    }
+            return false;
+        }
 
         int sum = 0;
         boolean alternate = false;
@@ -197,62 +201,10 @@ public class pCreditos extends JFrame {
     }
 
     private String obtenerFechaActual() {
-    	
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date fechaActual = new Date();
         return formatoFecha.format(fechaActual);
     }
-    
-    private boolean guardarEnBaseDeDatos(double cantidadDinero, String fechaCompra) {
-        try {
-            // Establecer la conexión con la base de datos
-            Connection connection = DriverManager.getConnection(URL, USER, PWD);
-
-            // Consulta para insertar datos en la tabla de transacciones (ajusta según tu esquema)
-            String sql = "UPDATE usuario CREDITOS VALUES ? WHERE dni = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, creditosUsuario);
-                statement.setString(2, pFunciones.dniUsuario);
-                	
-                int filasAfectadas = statement.executeUpdate();
-                return filasAfectadas<1 ;
-            }
-
-        
-            // Cerrar la conexión
-          
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return false;
-    }
-    
-    public static boolean comprobarcreditos(int creditos) {
-	    try (Connection connection = DriverManager.getConnection(URL, USER, PWD)) {
-	        String query = "SELECT creditos FROM usuario WHERE dni = ? ";
-	        PreparedStatement statement = connection.prepareStatement(query);
-	        statement.setString(1, pFunciones.dniUsuario);
-	       
-	        ResultSet resultSet = statement.executeQuery();
-
-	        if (resultSet.next()) {
-	        	
-	        	pFunciones.creditosUsuario = resultSet.getInt("CREDITOS");
-	        	
-	            
-	            System.out.println("Inicio de sesión exitoso para el usuario: " + creditosUsuario);
-	            
-	            return true; // Usuario y contraseña coinciden
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return false; // Usuario y contraseña no coinciden
-	}
-	
-	
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -263,3 +215,4 @@ public class pCreditos extends JFrame {
         });
     }
 }
+
