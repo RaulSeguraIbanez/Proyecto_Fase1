@@ -31,7 +31,7 @@ public class pNuevaReserva {
         frame.setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(255, 210, 175));
+        mainPanel.setBackground(new Color(255, 255, 255));
 
         JPanel northPanel = new JPanel(new BorderLayout());
         JToolBar toolBar = new JToolBar();
@@ -135,7 +135,7 @@ public class pNuevaReserva {
                         descripcionArea.setLineWrap(true);
                         descripcionArea.setWrapStyleWord(true);
                         descripcionArea.setEditable(false);
-                        descripcionArea.setBackground(new Color(255, 210, 175));
+                        descripcionArea.setBackground(new Color(255, 255, 255));
 
                         mainPanel.add(descripcionArea, BorderLayout.CENTER);
 
@@ -212,12 +212,12 @@ public class pNuevaReserva {
         nombreLabel.setFont(new Font("Sans-serif", Font.PLAIN, 25));
 
         JPanel subPanel1 = new JPanel(new GridBagLayout());
-        subPanel1.setBackground(new Color(255, 210, 175));
+        subPanel1.setBackground(new Color(255, 255, 255));
         subPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel labelPanel = new JPanel();
         labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.Y_AXIS));
-        labelPanel.setBackground(new Color(255, 210, 175));
+        labelPanel.setBackground(new Color(255, 255, 255));
         labelPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         labelPanel.add(precioLabel);
@@ -234,7 +234,7 @@ public class pNuevaReserva {
         subPanel1.add(labelPanel, gbc);
 
         JPanel fechaPanel = new JPanel(new FlowLayout());
-        fechaPanel.setBackground(new Color(255, 210, 175));
+        fechaPanel.setBackground(new Color(255, 255, 255));
 
         fechaPanel.add(fechaInicioLabel);
         fechaPanel.add(fechaInicioChooser);
@@ -247,7 +247,7 @@ public class pNuevaReserva {
         subPanel1.add(fechaPanel, gbc);
 
         JPanel botonPanel = new JPanel(new FlowLayout());
-        botonPanel.setBackground(new Color(255, 210, 175));
+        botonPanel.setBackground(new Color(255, 255, 255));
 
         botonPanel.add(reservarButton);
 

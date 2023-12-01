@@ -16,7 +16,7 @@ public class pRegistro extends JPanel {
 
     public pRegistro() {
         setLayout(new GridBagLayout());
-        setBackground(new Color(255, 210, 175)); // Cambiar el fondo a naranja clarito
+        setBackground(new Color(255, 255, 255)); // Cambiar el fondo a naranja clarito
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(5, 5, 5, 5);
