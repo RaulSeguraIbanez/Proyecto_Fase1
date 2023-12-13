@@ -66,7 +66,7 @@ public class fotosperfil extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Lógica cuando se presiona el botón
-                JOptionPane.showMessageDialog(fotosperfil.this, "Botón presionado");
+                
 
                 // Obtener la ruta de la imagen asociada con el botón
                 rutaImagenSeleccionada = obtenerRutaImagenPorBoton(button);
